@@ -17,12 +17,8 @@ const canonical = new URL(Astro.url.pathname, site.url).href.replace(
 
 const fullTitle = `${title} | ${site.name}`;
 
-/**
- * No og:image yet — a broken preview looks worse than no preview, so the
- * tag is omitted until the image exists. Add /og.png (1200x630) and set
- * OG_IMAGE to enable it.
- */
-const OG_IMAGE: string | null = null;
+/** Generated from the JT brand mark by `npm run assets`. */
+const OG_IMAGE: string | null = '/og.png';
 
 const structuredData = {
   '@context': 'https://schema.org',
