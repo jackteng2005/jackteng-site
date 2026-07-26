@@ -1,0 +1,100 @@
+---
+/**
+ * Line icon set. Single stroke weight and cap style across all glyphs so
+ * they read as one family rather than assorted clip art.
+ */
+export type IconName =
+  | 'browser'
+  | 'automation'
+  | 'dashboard'
+  | 'conversation'
+  | 'document'
+  | 'build'
+  | 'launch'
+  | 'check';
+
+interface Props {
+  name: IconName;
+  class?: string;
+}
+
+const { name, class: className = 'size-5' } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={className}
+>
+  {
+    name === 'browser' && (
+      <>
+        <rect x="3" y="4" width="18" height="16" rx="2.5" />
+        <path d="M3 9h18" />
+        <path d="M6.5 6.5h.01M9.5 6.5h.01" />
+      </>
+    )
+  }
+  {
+    name === 'automation' && (
+      <>
+        <circle cx="5" cy="6" r="2.25" />
+        <circle cx="5" cy="18" r="2.25" />
+        <circle cx="19" cy="12" r="2.25" />
+        <path d="M7.25 6h5.25a4 4 0 0 1 4 4v.25" />
+        <path d="M7.25 18h5.25a4 4 0 0 0 4-4v-.25" />
+      </>
+    )
+  }
+  {
+    name === 'dashboard' && (
+      <>
+        <rect x="3" y="3" width="7.5" height="8.5" rx="1.75" />
+        <rect x="13.5" y="3" width="7.5" height="5" rx="1.75" />
+        <rect x="13.5" y="11" width="7.5" height="10" rx="1.75" />
+        <rect x="3" y="14.5" width="7.5" height="6.5" rx="1.75" />
+      </>
+    )
+  }
+  {
+    name === 'conversation' && (
+      <>
+        <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H9l-4 2.5V17.4A7.5 7.5 0 0 1 12.5 4h0A7.5 7.5 0 0 1 20 11.5Z" />
+        <path d="M9 11h7" />
+      </>
+    )
+  }
+  {
+    name === 'document' && (
+      <>
+        <path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8Z" />
+        <path d="M14 3v5h5" />
+        <path d="M9 13h6M9 17h4" />
+      </>
+    )
+  }
+  {
+    name === 'build' && (
+      <>
+        <path d="M9.5 7 4 12l5.5 5" />
+        <path d="M14.5 7 20 12l-5.5 5" />
+      </>
+    )
+  }
+  {
+    name === 'launch' && (
+      <>
+        <path d="M12 20V5" />
+        <path d="M5.5 11.5 12 5l6.5 6.5" />
+      </>
+    )
+  }
+  {
+    name === 'check' && <path d="m5 13 4.5 4.5L19 7" />
+  }
+</svg>

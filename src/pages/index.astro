@@ -1,12 +1,15 @@
 ---
-import Demo from '../components/Demo.astro';
 import EmailLink from '../components/EmailLink.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
 import Section from '../components/Section.astro';
+import DashboardArt from '../components/art/DashboardArt.astro';
+import HeroArt from '../components/art/HeroArt.astro';
 import Base from '../layouts/Base.astro';
 import { emailPlain } from '../site';
 
 const description =
-  'Jack Teng builds websites, booking and enquiry automation, and internal tools for clubs, venues and membership organisations in Sydney, Australia and New Zealand.';
+  'Jack Teng is a Sydney software developer building web platforms, booking and enquiry automation, and internal dashboards for clubs, venues and membership organisations across Australia and New Zealand.';
 
 const commitments = [
   'Sydney-based',
@@ -42,9 +45,10 @@ const problems = [
   },
 ];
 
-const services = [
+const services: { icon: IconName; name: string; summary: string; includes: string[] }[] = [
   {
-    name: 'A website that earns its keep',
+    icon: 'browser',
+    name: 'Websites that earn their keep',
     summary:
       'Fast, mobile-first, and built so a first-time visitor understands what you do and how to reach you within seconds.',
     includes: [
@@ -56,7 +60,8 @@ const services = [
     ],
   },
   {
-    name: 'Enquiry and booking automation',
+    icon: 'automation',
+    name: 'Booking and enquiry automation',
     summary:
       'The repetitive half of front-of-house work, handled by software instead of by staff.',
     includes: [
@@ -68,14 +73,15 @@ const services = [
     ],
   },
   {
-    name: 'Internal tools, and AI where it genuinely helps',
+    icon: 'dashboard',
+    name: 'Platforms, dashboards and AI where it helps',
     summary:
-      'A single place to see what is booked, paid and outstanding — plus automation for the work that is currently manual reading and re-typing.',
+      'Custom software for the parts of your operation that no off-the-shelf product fits, with a single place to see what is booked, paid and outstanding.',
     includes: [
+      'Purpose-built platforms for your own workflows',
       'Dashboards showing bookings, capacity and payments in one view',
-      'Triage and routing for incoming enquiries',
+      'Member and customer records that stay accurate',
       'An assistant that answers from your own documents and policies',
-      'Document and form processing instead of manual data entry',
       'Honest advice on where AI is the wrong tool — often it is',
     ],
   },
@@ -93,7 +99,7 @@ const audiences = [
     primary: false,
   },
   {
-    name: 'Independent professionals and creators',
+    name: 'Independent professionals',
     body: 'A site that looks the part and an intake process that does not lose people.',
     primary: false,
   },
@@ -101,6 +107,52 @@ const audiences = [
     name: 'Founders and startups',
     body: 'Landing pages, internal tools and first-version platforms, built quickly and honestly scoped.',
     primary: false,
+  },
+];
+
+const process: { icon: IconName; step: string; title: string; body: string }[] = [
+  {
+    icon: 'conversation',
+    step: 'Step 1',
+    title: 'Conversation',
+    body: 'A short call about how the work is handled now and where the time actually goes. No pitch.',
+  },
+  {
+    icon: 'document',
+    step: 'Step 2',
+    title: 'Written proposal',
+    body: 'Scope, deliverables, timeline and a fixed price in writing before anything is built.',
+  },
+  {
+    icon: 'build',
+    step: 'Step 3',
+    title: 'Build, with previews',
+    body: 'You see working software as it comes together, not a finished surprise at the end.',
+  },
+  {
+    icon: 'launch',
+    step: 'Step 4',
+    title: 'Launch and handover',
+    body: 'Deployed, documented, and yours — with support afterwards if you want it.',
+  },
+];
+
+const platformPoints = [
+  {
+    title: 'One place, not five tabs',
+    body: 'Bookings, capacity, payments and enquiries in a single view built around how you actually work.',
+  },
+  {
+    title: 'Obvious rather than clever',
+    body: 'Designed for staff of any technical confidence to use correctly on a busy shift, first time.',
+  },
+  {
+    title: 'Accurate under pressure',
+    body: 'Live numbers that stay right when several people are acting on the same information at once.',
+  },
+  {
+    title: 'Yours to keep',
+    body: 'Standard technology and no lock-in, so you are never dependent on one developer to keep it running.',
   },
 ];
 
@@ -132,33 +184,49 @@ const faqs = [
 ];
 ---
 
-<Base title="Websites, automation and internal tools" description={description}>
+<Base
+  title="Software, platforms and automation"
+  description={description}
+>
   <!-- ── Hero ──────────────────────────────────────────────────────── -->
-  <section class="pt-16 pb-20 sm:pt-24 sm:pb-24">
+  <section class="overflow-hidden pt-14 pb-20 sm:pt-20 sm:pb-24">
     <div class="shell">
-      <p class="eyebrow">Sydney &middot; Australia &amp; New Zealand</p>
+      <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+        <div>
+          <p class="eyebrow">Sydney &middot; Australia &amp; New Zealand</p>
 
-      <h1 class="mt-5 max-w-4xl text-4xl leading-[1.08] font-bold sm:text-5xl lg:text-6xl">
-        Websites, automation and internal tools for clubs, venues and
-        membership organisations.
-      </h1>
+          <h1
+            class="mt-5 text-4xl leading-[1.08] font-bold sm:text-5xl lg:text-[3.4rem]"
+          >
+            Software, platforms and automation for clubs, venues and
+            membership organisations.
+          </h1>
 
-      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-text-muted sm:text-xl">
-        I&rsquo;m Jack Teng. I build the systems that handle your enquiries,
-        registrations and member admin &mdash; so your staff stop doing it by
-        hand.
-      </p>
+          <p class="mt-7 max-w-xl text-lg leading-relaxed text-text-muted">
+            I&rsquo;m Jack Teng, a software developer in Sydney. I design and
+            build the platforms that run your bookings, registrations and
+            member admin &mdash; and the automation that keeps them running
+            without costing staff time.
+          </p>
 
-      <div class="mt-10 flex flex-wrap items-center gap-4">
-        <EmailLink label="Start a conversation" variant="primary" />
-        <a href="#demo" class="btn btn-secondary">See a working demo</a>
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <EmailLink label="Start a conversation" variant="primary" />
+            <a href="#services" class="btn btn-secondary">See what I build</a>
+          </div>
+        </div>
+
+        <div class="lg:pl-4">
+          <HeroArt />
+        </div>
       </div>
 
-      <ul class="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-border pt-8">
+      <ul class="mt-16 flex flex-wrap gap-x-8 gap-y-3 border-t border-border pt-8">
         {
           commitments.map((c) => (
             <li class="flex items-center gap-2 text-sm text-text-muted">
-              <span aria-hidden="true" class="text-accent">&#10003;</span>
+              <span aria-hidden="true" class="text-accent">
+                <Icon name="check" class="size-4" />
+              </span>
               {c}
             </li>
           ))
@@ -198,15 +266,20 @@ const faqs = [
       {
         services.map((s) => (
           <article class="card flex flex-col p-7">
-            <h3 class="font-display text-xl font-bold">{s.name}</h3>
+            <span
+              class="inline-flex size-12 items-center justify-center rounded-xl bg-accent-wash text-accent-strong"
+            >
+              <Icon name={s.icon} class="size-6" />
+            </span>
+            <h3 class="mt-6 font-display text-xl font-bold">{s.name}</h3>
             <p class="mt-3 text-sm leading-relaxed text-text-muted">
               {s.summary}
             </p>
             <ul class="mt-6 space-y-2.5 border-t border-border pt-6">
               {s.includes.map((i) => (
                 <li class="flex gap-2.5 text-sm leading-relaxed">
-                  <span aria-hidden="true" class="mt-0.5 shrink-0 text-accent">
-                    &#10003;
+                  <span aria-hidden="true" class="mt-1 shrink-0 text-accent">
+                    <Icon name="check" class="size-3.5" />
                   </span>
                   <span class="text-text-muted">{i}</span>
                 </li>
@@ -220,7 +293,7 @@ const faqs = [
     <!-- Broad audiences, kept after the venue-led framing so the pitch
          stays specific without turning other work away. -->
     <div class="mt-16 border-t border-border pt-14">
-      <h3 class="font-display text-2xl font-bold">Who I work with</h3>
+      <h3 class="font-display text-2xl font-bold">Who I build for</h3>
       <div class="mt-8 grid gap-6 sm:grid-cols-2">
         {
           audiences.map((a) => (
@@ -249,100 +322,81 @@ const faqs = [
     </div>
   </Section>
 
-  <!-- ── Experience ────────────────────────────────────────────────── -->
+  <!-- ── Approach ──────────────────────────────────────────────────── -->
   <Section
-    id="work"
-    eyebrow="Experience"
-    title="A confidential project, described honestly."
-    lede="I am currently engaged as a contractor building an operations platform for a Sydney members' club. The application and its data are confidential, so there are no screenshots here — but the work itself is describable."
+    id="approach"
+    eyebrow="Approach"
+    title="One connected system, not five disconnected tools."
+    lede="Most operational problems are not caused by missing software. They are caused by software that does not talk to itself, so people become the glue between the parts."
     tinted
   >
-    <div class="grid gap-6 lg:grid-cols-3">
-      <article class="card p-7 lg:col-span-2">
-        <p class="eyebrow">Client project</p>
-        <h3 class="mt-3 font-display text-xl font-bold">
-          Operations and tournament platform for a members&rsquo; club
-        </h3>
+    <FlowDiagram />
 
-        <dl class="mt-6 space-y-5 text-sm">
-          <div>
-            <dt class="font-semibold">My role</dt>
-            <dd class="mt-1 leading-relaxed text-text-muted">
-              Sole developer, engaged directly as a contractor. Responsible for
-              understanding the club&rsquo;s existing processes, designing the
-              system around them, building it, and keeping it running.
-            </dd>
-          </div>
-          <div>
-            <dt class="font-semibold">The problem</dt>
-            <dd class="mt-1 leading-relaxed text-text-muted">
-              Club operations that had grown up around manual process and
-              spreadsheets, where the accuracy of the record mattered to
-              members and depended on whoever was on shift.
-            </dd>
-          </div>
-          <div>
-            <dt class="font-semibold">What made it non-trivial</dt>
-            <dd class="mt-1 leading-relaxed text-text-muted">
-              Live state that both staff and members act on at the same time;
-              rules that already existed socially and had to be encoded
-              faithfully; edge cases that only surface on a busy night; and
-              staff with a wide range of technical confidence, which meant the
-              interface had to be obvious rather than clever.
-            </dd>
-          </div>
-          <div>
-            <dt class="font-semibold">Constraints</dt>
-            <dd class="mt-1 leading-relaxed text-text-muted">
-              Existing processes could not change overnight, so the system had
-              to fit the club rather than the reverse. Data accuracy mattered
-              more than feature count.
-            </dd>
-          </div>
-        </dl>
+    <div class="mt-20 border-t border-border pt-14">
+      <h3 class="font-display text-2xl font-bold">How a project runs</h3>
+      <p class="mt-4 max-w-2xl leading-relaxed text-text-muted">
+        No open-ended hourly work and no vague statements of work. You know the
+        price and the deliverables before anything starts.
+      </p>
 
-        <!--
-          TODO (Jack): this section is deliberately non-numeric because I will
-          not publish figures I cannot verify. Once you have WRITTEN permission
-          from the club, the strongest additions are:
-            - one measurable before/after result you are allowed to disclose
-            - a one-line testimonial
-            - an architecture diagram with private details removed
-          Until then, leave this as-is. Do not name the club without permission.
-        -->
-        <p class="mt-7 border-t border-border pt-6 text-sm text-text-muted">
-          Screenshots and client details are withheld under a confidentiality
-          agreement. I am happy to walk through the architecture and the
-          decisions behind it on a call.
-        </p>
-      </article>
-
-      <article class="card flex flex-col p-7">
-        <p class="eyebrow">Public demonstration</p>
-        <h3 class="mt-3 font-display text-xl font-bold">
-          Event registration, end to end
-        </h3>
-        <p class="mt-3 text-sm leading-relaxed text-text-muted">
-          Since the client work cannot be shown, here is a working example you
-          can click through instead: a fictional club event, the automated
-          sequence it triggers, and what staff see. Built with the same
-          approach as real projects.
-        </p>
-        <a href="#demo" class="btn btn-secondary mt-auto self-start">
-          Try the demo
-        </a>
-      </article>
+      <ol class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          process.map((p) => (
+            <li class="card p-6">
+              <span
+                class="inline-flex size-10 items-center justify-center rounded-lg bg-accent-wash text-accent-strong"
+              >
+                <Icon name={p.icon} class="size-5" />
+              </span>
+              <p class="mt-5 text-xs font-semibold tracking-wide text-accent-strong uppercase">
+                {p.step}
+              </p>
+              <h4 class="mt-1.5 font-display text-base font-bold">{p.title}</h4>
+              <p class="mt-2.5 text-sm leading-relaxed text-text-muted">
+                {p.body}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </Section>
 
-  <!-- ── Demo ──────────────────────────────────────────────────────── -->
+  <!-- ── Platform ──────────────────────────────────────────────────── -->
   <Section
-    id="demo"
-    eyebrow="Live demo"
-    title="Try the automation yourself."
-    lede="Register for a fictional club event and watch what would happen next: the member's confirmation, the reminder, the follow-up, and the row that appears for staff."
+    id="platform"
+    eyebrow="The result"
+    title="Built to be opened every day."
+    lede="Operational software is judged on a busy night, not in a demo. That shapes every decision in it."
   >
-    <Demo />
+    <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+      <div class="order-2 lg:order-1">
+        <div class="rounded-2xl border border-border bg-surface-sunken p-4 shadow-card sm:p-6">
+          <DashboardArt />
+        </div>
+        <p class="mt-4 text-xs text-text-muted">
+          Illustrative interface, not a client system.
+        </p>
+      </div>
+
+      <dl class="order-1 space-y-8 lg:order-2">
+        {
+          platformPoints.map((p) => (
+            <div>
+              <dt class="flex items-center gap-3 font-display text-base font-bold">
+                <span aria-hidden="true" class="text-accent">
+                  <Icon name="check" class="size-4.5" />
+                </span>
+                {p.title}
+              </dt>
+              <dd class="mt-2 pl-8 text-sm leading-relaxed text-text-muted">
+                {p.body}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
   </Section>
 
   <!-- ── About ─────────────────────────────────────────────────────── -->
@@ -351,26 +405,26 @@ const faqs = [
       <div class="lg:col-span-3">
         <div class="space-y-5 text-base leading-relaxed text-text-muted">
           <p>
-            I&rsquo;m Jack Teng, a software developer based in Sydney. I&rsquo;m
-            in my final year of a Computer Science and Commerce degree, and I
-            work as a contractor building an operations platform for a
-            members&rsquo; club &mdash; real software, in daily use, with real
-            consequences when it is wrong.
+            I&rsquo;m Jack Teng, a software developer based in Sydney. I build
+            web platforms and the operational systems behind them &mdash; the
+            software a business actually runs on, where being wrong has
+            consequences on the night.
           </p>
           <p>
-            That combination is deliberate. The Commerce half means I ask what a
-            change is worth to your business before I build it. The Computer
-            Science half means I can actually build it. Most of the value in
-            this work is not the code &mdash; it is understanding a process well
-            enough to know which parts should be automated and which should be
-            left alone.
+            Most of my work is operational rather than decorative:
+            registrations, bookings, scheduling, member records, internal
+            dashboards. Systems that staff use every shift and that have to
+            behave predictably while several people act on the same
+            information. That kind of work rewards understanding a process
+            properly before writing any code, which is how I start every
+            project.
           </p>
           <p>
             You deal with me directly. There is no account manager, no handover
-            to a junior, and no agency markup. That is the advantage of working
-            with one person; the limit is that I take on a small number of
-            projects at a time, and I will tell you honestly if I am not the
-            right fit or if your problem does not need custom software at all.
+            to someone junior, and no agency markup. The trade-off is that I
+            take on a small number of projects at a time &mdash; and I will
+            tell you honestly if I am not the right fit, or if your problem
+            does not need custom software at all.
           </p>
         </div>
       </div>
@@ -388,15 +442,15 @@ const faqs = [
               <dd class="mt-0.5 font-medium">Australia and New Zealand</dd>
             </div>
             <div>
-              <dt class="text-text-muted">Currently</dt>
+              <dt class="text-text-muted">Focus</dt>
               <dd class="mt-0.5 font-medium">
-                Contract developer, members&rsquo; club platform
+                Operational web platforms, booking systems and automation
               </dd>
             </div>
             <div>
-              <dt class="text-text-muted">Studying</dt>
+              <dt class="text-text-muted">Availability</dt>
               <dd class="mt-0.5 font-medium">
-                Computer Science &amp; Commerce, final year
+                A small number of projects at a time
               </dd>
             </div>
           </dl>
@@ -416,14 +470,23 @@ const faqs = [
         faqs.map((f) => (
           <details class="group py-5">
             <summary
-              class="flex cursor-pointer items-start justify-between gap-6 font-display text-base font-semibold marker:content-none"
+              class="flex cursor-pointer items-start justify-between gap-6 font-display text-base font-semibold"
             >
               {f.q}
               <span
                 aria-hidden="true"
-                class="mt-1 shrink-0 text-accent transition-transform group-open:rotate-45"
+                class="mt-0.5 shrink-0 text-accent transition-transform group-open:rotate-45"
               >
-                &#43;
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  class="size-5"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
               </span>
             </summary>
             <p class="mt-3 max-w-2xl text-sm leading-relaxed text-text-muted">

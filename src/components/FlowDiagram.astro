@@ -1,0 +1,105 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+
+/**
+ * Built from HTML rather than one wide SVG on purpose: a 1000px-wide SVG
+ * carrying labels shrinks its text to nothing on a phone. This reflows to a
+ * single column and the type stays at its proper size.
+ */
+const stages: {
+  icon: IconName;
+  step: string;
+  title: string;
+  items: string[];
+}[] = [
+  {
+    icon: 'conversation',
+    step: '01',
+    title: 'Enquiries arrive',
+    items: [
+      'Website enquiry form',
+      'Phone and SMS',
+      'Email and social messages',
+      'Event or membership sign-ups',
+    ],
+  },
+  {
+    icon: 'automation',
+    step: '02',
+    title: 'The system handles them',
+    items: [
+      'Sorted and routed on arrival',
+      'Confirmation sent immediately',
+      'Reminders before the date',
+      'Follow-up sent afterwards',
+    ],
+  },
+  {
+    icon: 'dashboard',
+    step: '03',
+    title: 'You see what matters',
+    items: [
+      'One view of every booking',
+      'Capacity and payments current',
+      'Nothing waiting in an inbox',
+      'Numbers you can act on',
+    ],
+  },
+];
+---
+
+<div class="grid gap-5 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-stretch lg:gap-0">
+  {
+    stages.map((stage, i) => (
+      <>
+        <div class="card relative flex flex-col p-7 lg:p-8">
+          <div class="flex items-center justify-between">
+            <span
+              class="inline-flex size-11 items-center justify-center rounded-lg bg-accent-wash text-accent-strong"
+            >
+              <Icon name={stage.icon} class="size-5.5" />
+            </span>
+            <span class="font-display text-sm font-bold tracking-widest text-border-strong">
+              {stage.step}
+            </span>
+          </div>
+
+          <h3 class="mt-6 font-display text-lg font-bold">{stage.title}</h3>
+
+          <ul class="mt-5 space-y-3 border-t border-border pt-5">
+            {stage.items.map((item) => (
+              <li class="flex gap-2.5 text-sm leading-relaxed text-text-muted">
+                <span aria-hidden="true" class="mt-1 shrink-0 text-accent">
+                  <Icon name="check" class="size-3.5" />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Connector. Horizontal chevron between columns on desktop,
+            vertical between stacked cards on mobile. */}
+        {i < stages.length - 1 && (
+          <div
+            aria-hidden="true"
+            class="flex items-center justify-center lg:w-14"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="size-6 rotate-90 text-border-strong lg:rotate-0"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+          </div>
+        )}
+      </>
+    ))
+  }
+</div>

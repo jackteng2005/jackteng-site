@@ -36,8 +36,8 @@ export const emailEncoded = Buffer.from(
 export const nav = [
   { href: '#problems', label: 'Problems' },
   { href: '#services', label: 'Services' },
-  { href: '#work', label: 'Experience' },
-  { href: '#demo', label: 'Live demo' },
+  { href: '#approach', label: 'Approach' },
+  { href: '#platform', label: 'Platform' },
   { href: '#about', label: 'About' },
 ] as const;
 
