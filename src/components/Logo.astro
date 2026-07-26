@@ -39,8 +39,13 @@ const { withDescriptor = false, class: className = '' } = Astro.props;
     )
   }
   <span class="flex flex-col leading-none">
-    <span class="font-display text-lg font-bold tracking-tight text-text">
-      {site.name}<span class="text-accent">.</span>
+    <span class="font-display text-xl font-bold tracking-tight text-text">
+      {/* Sighted visitors get the "JT" monogram; assistive tech still gets
+          the full name, so the wordmark does not announce as two letters.
+          In the header the anchor's own aria-label takes precedence, so this
+          never doubles up. */}
+      <span class="sr-only">{site.name}</span>
+      <span aria-hidden="true">JT<span class="text-accent">.</span></span>
     </span>
     {
       withDescriptor && (
