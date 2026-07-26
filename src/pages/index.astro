@@ -1,0 +1,498 @@
+---
+import Demo from '../components/Demo.astro';
+import EmailLink from '../components/EmailLink.astro';
+import Section from '../components/Section.astro';
+import Base from '../layouts/Base.astro';
+import { emailPlain } from '../site';
+
+const description =
+  'Jack Teng builds websites, booking and enquiry automation, and internal tools for clubs, venues and membership organisations in Sydney, Australia and New Zealand.';
+
+const commitments = [
+  'Sydney-based',
+  'You deal with me directly',
+  'Fixed quote before work starts',
+  'You own the code',
+];
+
+const problems = [
+  {
+    title: 'Enquiries land in three different inboxes',
+    body: 'Some get answered twice, some never get answered at all, and nobody can tell which is which.',
+  },
+  {
+    title: 'Registration runs on a spreadsheet',
+    body: 'One person babysits it, and everything stops when they are away or the file gets two versions.',
+  },
+  {
+    title: 'Confirmations are typed out by hand',
+    body: 'Every booking costs someone five minutes of copying names, dates and details into an email.',
+  },
+  {
+    title: 'Nothing follows up automatically',
+    body: 'An enquiry that is not answered the same day usually goes quiet — and nobody notices it went quiet.',
+  },
+  {
+    title: 'Staff answer the same five questions daily',
+    body: 'Opening hours, dress code, how to book, where to park, whether guests are allowed. Every single day.',
+  },
+  {
+    title: 'No single view of what is actually booked',
+    body: 'Capacity, payments and no-shows live in different places, so the real numbers arrive too late to act on.',
+  },
+];
+
+const services = [
+  {
+    name: 'A website that earns its keep',
+    summary:
+      'Fast, mobile-first, and built so a first-time visitor understands what you do and how to reach you within seconds.',
+    includes: [
+      'Structure and copy worked out with you, not guessed',
+      'Responsive build, fast on a phone on mobile data',
+      'A clear enquiry path that arrives where staff will see it',
+      'Analytics so you know where enquiries come from',
+      'Handover, so you can edit content yourself',
+    ],
+  },
+  {
+    name: 'Enquiry and booking automation',
+    summary:
+      'The repetitive half of front-of-house work, handled by software instead of by staff.',
+    includes: [
+      'Event, table or membership registration flows',
+      'Automatic confirmations, reminders and receipts',
+      'Follow-up sequences after an enquiry or an event',
+      'Waitlists and capacity handled without intervention',
+      'Staff notifications, so nothing depends on refreshing an inbox',
+    ],
+  },
+  {
+    name: 'Internal tools, and AI where it genuinely helps',
+    summary:
+      'A single place to see what is booked, paid and outstanding — plus automation for the work that is currently manual reading and re-typing.',
+    includes: [
+      'Dashboards showing bookings, capacity and payments in one view',
+      'Triage and routing for incoming enquiries',
+      'An assistant that answers from your own documents and policies',
+      'Document and form processing instead of manual data entry',
+      'Honest advice on where AI is the wrong tool — often it is',
+    ],
+  },
+];
+
+const audiences = [
+  {
+    name: 'Clubs, venues and membership organisations',
+    body: 'Sports and community clubs, function centres, studios, associations and social leagues. Registrations, recurring events, member communication and admin — the work I know best.',
+    primary: true,
+  },
+  {
+    name: 'Small and local businesses',
+    body: 'If enquiries, bookings or quotes are being handled by hand, the same tools apply.',
+    primary: false,
+  },
+  {
+    name: 'Independent professionals and creators',
+    body: 'A site that looks the part and an intake process that does not lose people.',
+    primary: false,
+  },
+  {
+    name: 'Founders and startups',
+    body: 'Landing pages, internal tools and first-version platforms, built quickly and honestly scoped.',
+    primary: false,
+  },
+];
+
+const faqs = [
+  {
+    q: 'How does pricing work if nothing is listed?',
+    a: 'We have a short conversation about what you actually need, then I send a written scope with a fixed price. No hourly billing and no surprises mid-project. Work starts on a deposit, with the balance on completion. I quote per project because a one-page site and a members platform are not the same job, and a price list would misrepresent both.',
+  },
+  {
+    q: 'How long does it take?',
+    a: 'A small site is usually one to two weeks. Booking and enquiry automation is typically two to four weeks depending on how many steps it replaces. Larger platforms get split into phases so you see something working early rather than waiting months.',
+  },
+  {
+    q: 'Who owns the code and the domain?',
+    a: 'You do. The domain should be registered in your own account — never in your developer’s. Code and content transfer to you on final payment, and I will hand over everything needed to run or move it without me.',
+  },
+  {
+    q: 'What does it cost to run afterwards?',
+    a: 'Usually very little. Most sites of this kind host for free or a few dollars a month, plus your domain. Automation that sends email or SMS has per-message costs. I will tell you the real running cost before you commit, not after.',
+  },
+  {
+    q: 'Do we actually need AI for this?',
+    a: 'Often no, and I will say so. A reminder that sends on a schedule does not need a language model. AI earns its place when the task involves reading unstructured text — enquiries, documents, forms — and I will point you at the simpler option when one exists.',
+  },
+  {
+    q: 'We already have a website. Is it a rebuild?',
+    a: 'Not necessarily. If the site is serviceable, the cheaper fix is usually to leave it alone and repair the enquiry and booking process behind it. I will tell you which situation you are in.',
+  },
+];
+---
+
+<Base title="Websites, automation and internal tools" description={description}>
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="pt-16 pb-20 sm:pt-24 sm:pb-24">
+    <div class="shell">
+      <p class="eyebrow">Sydney &middot; Australia &amp; New Zealand</p>
+
+      <h1 class="mt-5 max-w-4xl text-4xl leading-[1.08] font-bold sm:text-5xl lg:text-6xl">
+        Websites, automation and internal tools for clubs, venues and
+        membership organisations.
+      </h1>
+
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-text-muted sm:text-xl">
+        I&rsquo;m Jack Teng. I build the systems that handle your enquiries,
+        registrations and member admin &mdash; so your staff stop doing it by
+        hand.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <EmailLink label="Start a conversation" variant="primary" />
+        <a href="#demo" class="btn btn-secondary">See a working demo</a>
+      </div>
+
+      <ul class="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-border pt-8">
+        {
+          commitments.map((c) => (
+            <li class="flex items-center gap-2 text-sm text-text-muted">
+              <span aria-hidden="true" class="text-accent">&#10003;</span>
+              {c}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Problems ──────────────────────────────────────────────────── -->
+  <Section
+    id="problems"
+    eyebrow="The problems I solve"
+    title="If any of this sounds familiar, it is fixable."
+    lede="None of these need a bigger team. They need the repetitive part handed to software that does not forget."
+    tinted
+  >
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((p) => (
+          <li class="card p-6">
+            <h3 class="font-display text-base font-bold">{p.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-muted">{p.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- ── Services ──────────────────────────────────────────────────── -->
+  <Section
+    id="services"
+    eyebrow="What I build"
+    title="Three ways to start."
+    lede="Most projects begin with one of these and grow from there. Every engagement is scoped in writing with a fixed price before any work begins."
+  >
+    <div class="grid gap-6 lg:grid-cols-3">
+      {
+        services.map((s) => (
+          <article class="card flex flex-col p-7">
+            <h3 class="font-display text-xl font-bold">{s.name}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-muted">
+              {s.summary}
+            </p>
+            <ul class="mt-6 space-y-2.5 border-t border-border pt-6">
+              {s.includes.map((i) => (
+                <li class="flex gap-2.5 text-sm leading-relaxed">
+                  <span aria-hidden="true" class="mt-0.5 shrink-0 text-accent">
+                    &#10003;
+                  </span>
+                  <span class="text-text-muted">{i}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Broad audiences, kept after the venue-led framing so the pitch
+         stays specific without turning other work away. -->
+    <div class="mt-16 border-t border-border pt-14">
+      <h3 class="font-display text-2xl font-bold">Who I work with</h3>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+        {
+          audiences.map((a) => (
+            <div
+              class={
+                a.primary
+                  ? 'rounded-xl border border-accent/40 bg-accent-wash p-6 sm:col-span-2'
+                  : 'p-1'
+              }
+            >
+              <h4 class="font-display text-base font-bold">
+                {a.name}
+                {a.primary && (
+                  <span class="ml-2.5 align-middle text-[0.6875rem] font-semibold tracking-wide text-accent-strong uppercase">
+                    Where I focus
+                  </span>
+                )}
+              </h4>
+              <p class="mt-2.5 text-sm leading-relaxed text-text-muted">
+                {a.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <!-- ── Experience ────────────────────────────────────────────────── -->
+  <Section
+    id="work"
+    eyebrow="Experience"
+    title="A confidential project, described honestly."
+    lede="I am currently engaged as a contractor building an operations platform for a Sydney members' club. The application and its data are confidential, so there are no screenshots here — but the work itself is describable."
+    tinted
+  >
+    <div class="grid gap-6 lg:grid-cols-3">
+      <article class="card p-7 lg:col-span-2">
+        <p class="eyebrow">Client project</p>
+        <h3 class="mt-3 font-display text-xl font-bold">
+          Operations and tournament platform for a members&rsquo; club
+        </h3>
+
+        <dl class="mt-6 space-y-5 text-sm">
+          <div>
+            <dt class="font-semibold">My role</dt>
+            <dd class="mt-1 leading-relaxed text-text-muted">
+              Sole developer, engaged directly as a contractor. Responsible for
+              understanding the club&rsquo;s existing processes, designing the
+              system around them, building it, and keeping it running.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold">The problem</dt>
+            <dd class="mt-1 leading-relaxed text-text-muted">
+              Club operations that had grown up around manual process and
+              spreadsheets, where the accuracy of the record mattered to
+              members and depended on whoever was on shift.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold">What made it non-trivial</dt>
+            <dd class="mt-1 leading-relaxed text-text-muted">
+              Live state that both staff and members act on at the same time;
+              rules that already existed socially and had to be encoded
+              faithfully; edge cases that only surface on a busy night; and
+              staff with a wide range of technical confidence, which meant the
+              interface had to be obvious rather than clever.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold">Constraints</dt>
+            <dd class="mt-1 leading-relaxed text-text-muted">
+              Existing processes could not change overnight, so the system had
+              to fit the club rather than the reverse. Data accuracy mattered
+              more than feature count.
+            </dd>
+          </div>
+        </dl>
+
+        <!--
+          TODO (Jack): this section is deliberately non-numeric because I will
+          not publish figures I cannot verify. Once you have WRITTEN permission
+          from the club, the strongest additions are:
+            - one measurable before/after result you are allowed to disclose
+            - a one-line testimonial
+            - an architecture diagram with private details removed
+          Until then, leave this as-is. Do not name the club without permission.
+        -->
+        <p class="mt-7 border-t border-border pt-6 text-sm text-text-muted">
+          Screenshots and client details are withheld under a confidentiality
+          agreement. I am happy to walk through the architecture and the
+          decisions behind it on a call.
+        </p>
+      </article>
+
+      <article class="card flex flex-col p-7">
+        <p class="eyebrow">Public demonstration</p>
+        <h3 class="mt-3 font-display text-xl font-bold">
+          Event registration, end to end
+        </h3>
+        <p class="mt-3 text-sm leading-relaxed text-text-muted">
+          Since the client work cannot be shown, here is a working example you
+          can click through instead: a fictional club event, the automated
+          sequence it triggers, and what staff see. Built with the same
+          approach as real projects.
+        </p>
+        <a href="#demo" class="btn btn-secondary mt-auto self-start">
+          Try the demo
+        </a>
+      </article>
+    </div>
+  </Section>
+
+  <!-- ── Demo ──────────────────────────────────────────────────────── -->
+  <Section
+    id="demo"
+    eyebrow="Live demo"
+    title="Try the automation yourself."
+    lede="Register for a fictional club event and watch what would happen next: the member's confirmation, the reminder, the follow-up, and the row that appears for staff."
+  >
+    <Demo />
+  </Section>
+
+  <!-- ── About ─────────────────────────────────────────────────────── -->
+  <Section id="about" eyebrow="About" title="Who you would be working with." tinted>
+    <div class="grid gap-10 lg:grid-cols-5">
+      <div class="lg:col-span-3">
+        <div class="space-y-5 text-base leading-relaxed text-text-muted">
+          <p>
+            I&rsquo;m Jack Teng, a software developer based in Sydney. I&rsquo;m
+            in my final year of a Computer Science and Commerce degree, and I
+            work as a contractor building an operations platform for a
+            members&rsquo; club &mdash; real software, in daily use, with real
+            consequences when it is wrong.
+          </p>
+          <p>
+            That combination is deliberate. The Commerce half means I ask what a
+            change is worth to your business before I build it. The Computer
+            Science half means I can actually build it. Most of the value in
+            this work is not the code &mdash; it is understanding a process well
+            enough to know which parts should be automated and which should be
+            left alone.
+          </p>
+          <p>
+            You deal with me directly. There is no account manager, no handover
+            to a junior, and no agency markup. That is the advantage of working
+            with one person; the limit is that I take on a small number of
+            projects at a time, and I will tell you honestly if I am not the
+            right fit or if your problem does not need custom software at all.
+          </p>
+        </div>
+      </div>
+
+      <aside class="lg:col-span-2">
+        <div class="card p-6">
+          <h3 class="font-display text-base font-bold">At a glance</h3>
+          <dl class="mt-5 space-y-4 text-sm">
+            <div>
+              <dt class="text-text-muted">Based in</dt>
+              <dd class="mt-0.5 font-medium">Sydney, Australia</dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">Working with clients in</dt>
+              <dd class="mt-0.5 font-medium">Australia and New Zealand</dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">Currently</dt>
+              <dd class="mt-0.5 font-medium">
+                Contract developer, members&rsquo; club platform
+              </dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">Studying</dt>
+              <dd class="mt-0.5 font-medium">
+                Computer Science &amp; Commerce, final year
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </Section>
+
+  <!-- ── FAQ ───────────────────────────────────────────────────────── -->
+  <Section
+    id="faq"
+    eyebrow="Questions"
+    title="The things people ask before emailing."
+  >
+    <div class="max-w-3xl divide-y divide-border">
+      {
+        faqs.map((f) => (
+          <details class="group py-5">
+            <summary
+              class="flex cursor-pointer items-start justify-between gap-6 font-display text-base font-semibold marker:content-none"
+            >
+              {f.q}
+              <span
+                aria-hidden="true"
+                class="mt-1 shrink-0 text-accent transition-transform group-open:rotate-45"
+              >
+                &#43;
+              </span>
+            </summary>
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-text-muted">
+              {f.a}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ── Contact ───────────────────────────────────────────────────── -->
+  <section id="contact" class="py-20 sm:py-24">
+    <div class="shell">
+      <div class="card p-8 shadow-card sm:p-12">
+        <div class="grid gap-12 lg:grid-cols-2">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2 class="mt-3 text-3xl font-bold sm:text-4xl">
+              Tell me what is not working.
+            </h2>
+            <p class="mt-5 leading-relaxed text-text-muted">
+              Email is the fastest way to reach me. I read every message myself
+              and reply to all genuine enquiries, usually within one business
+              day.
+            </p>
+
+            <div class="mt-8">
+              <EmailLink label="Email me" variant="primary" />
+            </div>
+
+            <p class="mt-5 text-sm text-text-muted">
+              Or write to <span class="font-medium text-text">{emailPlain}</span>
+            </p>
+          </div>
+
+          <div class="rounded-lg border border-border bg-surface-sunken p-6">
+            <h3 class="font-display text-base font-bold">
+              Include these and I can give you a useful answer first time
+            </h3>
+            <ol class="mt-5 space-y-3 text-sm text-text-muted">
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">1</span>
+                Your organisation, and what it does
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">2</span>
+                What is not working right now
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">3</span>
+                Roughly when you need it done
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">4</span>
+                A budget range, if you have one in mind
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">5</span>
+                Your current website, if there is one
+              </li>
+            </ol>
+            <p class="mt-6 text-xs leading-relaxed text-text-muted">
+              If the email button opens your mail app with these prompts
+              already filled in, just type over them.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

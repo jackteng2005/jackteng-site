@@ -1,0 +1,51 @@
+---
+import { site } from '../site';
+
+/**
+ * Wordmark.
+ *
+ * Jack's JT brand mark is not in use yet. When the logo file arrives:
+ *   1. drop it in `public/` (SVG preferred; PNG works)
+ *   2. set HAS_MARK to true and MARK_SRC to the filename
+ *
+ * The mark's footprint is already reserved below at its final size, so
+ * adding it will not shift the header or footer layout.
+ */
+const HAS_MARK = false;
+const MARK_SRC = '/logo.svg';
+const MARK_PX = 34;
+
+interface Props {
+  /** Renders the descriptor beneath the name. Used in the footer. */
+  withDescriptor?: boolean;
+  class?: string;
+}
+
+const { withDescriptor = false, class: className = '' } = Astro.props;
+---
+
+<span class={`inline-flex items-center gap-3 ${className}`}>
+  {
+    HAS_MARK && (
+      <img
+        src={MARK_SRC}
+        alt=""
+        width={MARK_PX}
+        height={MARK_PX}
+        class="shrink-0 rounded-md"
+        loading="eager"
+        decoding="sync"
+      />
+    )
+  }
+  <span class="flex flex-col leading-none">
+    <span class="font-display text-lg font-bold tracking-tight text-text">
+      {site.name}<span class="text-accent">.</span>
+    </span>
+    {
+      withDescriptor && (
+        <span class="mt-1.5 text-xs text-text-muted">{site.descriptor}</span>
+      )
+    }
+  </span>
+</span>

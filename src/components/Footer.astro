@@ -1,0 +1,44 @@
+---
+import { site } from '../site';
+import EmailLink from './EmailLink.astro';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+const socials = [
+  { href: site.linkedin, label: 'LinkedIn' },
+  { href: site.github, label: 'GitHub' },
+].filter((s) => s.href);
+---
+
+<footer class="mt-24 border-t border-border bg-surface-sunken py-14">
+  <div class="shell">
+    <div class="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <Logo withDescriptor />
+        <p class="mt-4 text-sm text-text-muted">{site.location}</p>
+      </div>
+
+      <div class="flex flex-col gap-3 text-sm">
+        <span class="font-display font-semibold">Get in touch</span>
+        <EmailLink variant="inline" />
+        {
+          socials.length > 0 && (
+            <ul class="mt-1 flex gap-4">
+              {socials.map((s) => (
+                <li>
+                  <a href={s.href} class="prose-link" rel="me noopener">
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
+
+    <p class="mt-12 text-xs text-text-muted">
+      &copy; {year} {site.name}. Built in Sydney.
+    </p>
+  </div>
+</footer>

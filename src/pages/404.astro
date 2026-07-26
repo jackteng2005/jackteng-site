@@ -1,0 +1,26 @@
+---
+import EmailLink from '../components/EmailLink.astro';
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Page not found"
+  description="That page does not exist."
+  indexable={false}
+>
+  <section class="py-28 sm:py-36">
+    <div class="shell max-w-xl">
+      <p class="eyebrow">404</p>
+      <h1 class="mt-4 text-4xl font-bold sm:text-5xl">
+        That page does not exist.
+      </h1>
+      <p class="mt-6 leading-relaxed text-text-muted">
+        The link may be out of date, or the address may have a typo in it.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href="/" class="btn btn-primary">Back to the start</a>
+        <EmailLink label="Email me instead" variant="secondary" />
+      </div>
+    </div>
+  </section>
+</Base>

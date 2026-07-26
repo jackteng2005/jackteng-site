@@ -1,0 +1,82 @@
+---
+import { site } from '../site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Set to false on pages that should stay out of search results. */
+  indexable?: boolean;
+}
+
+const { title, description, indexable = true } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href.replace(
+  /(.)\/$/,
+  '$1'
+);
+
+const fullTitle = `${title} | ${site.name}`;
+
+/**
+ * No og:image yet — a broken preview looks worse than no preview, so the
+ * tag is omitted until the image exists. Add /og.png (1200x630) and set
+ * OG_IMAGE to enable it.
+ */
+const OG_IMAGE: string | null = null;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${site.url}/#person`,
+      name: site.name,
+      jobTitle: site.descriptor,
+      url: site.url,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Sydney',
+        addressRegion: site.region,
+        addressCountry: site.country,
+      },
+      ...(site.linkedin || site.github
+        ? { sameAs: [site.linkedin, site.github].filter(Boolean) }
+        : {}),
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${site.url}/#service`,
+      name: site.name,
+      description,
+      url: site.url,
+      founder: { '@id': `${site.url}/#person` },
+      areaServed: site.areasServed.map((n) => ({ '@type': 'Place', name: n })),
+      serviceType: [
+        'Web development',
+        'Business process automation',
+        'Custom software development',
+        'AI integration',
+      ],
+    },
+  ],
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{!indexable && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content="en_AU" />
+{OG_IMAGE && <meta property="og:image" content={new URL(OG_IMAGE, site.url).href} />}
+
+<meta name="twitter:card" content={OG_IMAGE ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

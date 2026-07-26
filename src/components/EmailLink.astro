@@ -1,0 +1,76 @@
+---
+import { emailEncoded, emailPlain, enquiryBody, enquirySubject } from '../site';
+
+/**
+ * Email link with the address kept out of the HTML source.
+ *
+ * The address is base64-encoded in a data attribute and assembled into a
+ * mailto: URL in the browser. Scrapers that parse static HTML find no
+ * address. This is mitigation, not immunity — a JS-executing crawler will
+ * still resolve it.
+ *
+ * With JavaScript disabled the link is inert, so a readable fallback
+ * ("hello [at] jackteng.com") is rendered in its place instead of the
+ * address simply disappearing.
+ */
+interface Props {
+  label?: string;
+  subject?: string;
+  body?: string;
+  variant?: 'primary' | 'secondary' | 'inline';
+  class?: string;
+}
+
+const {
+  label,
+  subject = enquirySubject,
+  body = enquiryBody,
+  variant = 'primary',
+  class: className = '',
+} = Astro.props;
+
+const variantClass =
+  variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
+
+// Shown until the script runs, and permanently if JS never runs.
+const text = label ?? emailPlain;
+---
+
+<span class="js-email-wrap inline-flex">
+  <a
+    href="#contact"
+    class={`js-email ${variantClass} ${className}`}
+    data-email={emailEncoded}
+    data-subject={subject}
+    data-body={body}
+    data-label={label ?? ''}
+  >
+    {text}
+  </a>
+</span>
+
+<script>
+  // Runs once for every EmailLink on the page. Astro dedupes this module.
+  document.querySelectorAll<HTMLAnchorElement>('a.js-email').forEach((el) => {
+    const encoded = el.dataset.email;
+    if (!encoded) return;
+
+    let address: string;
+    try {
+      address = atob(encoded);
+    } catch {
+      return; // Leave the readable fallback in place.
+    }
+
+    const params = new URLSearchParams();
+    if (el.dataset.subject) params.set('subject', el.dataset.subject);
+    if (el.dataset.body) params.set('body', el.dataset.body);
+
+    const query = params.toString().replace(/\+/g, '%20');
+    el.href = `mailto:${address}${query ? `?${query}` : ''}`;
+
+    // Links without an explicit label were displaying the obfuscated
+    // fallback; swap in the real address now that it is resolvable.
+    if (!el.dataset.label) el.textContent = address;
+  });
+</script>

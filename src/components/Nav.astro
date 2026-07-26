@@ -1,0 +1,45 @@
+---
+import { nav } from '../site';
+import EmailLink from './EmailLink.astro';
+import Logo from './Logo.astro';
+
+/**
+ * On narrow screens the section links are dropped rather than collapsed
+ * into a JS menu: this is a single scrolling page, so the links are a
+ * convenience, not the only route to the content. Keeps the header at
+ * zero JavaScript.
+ */
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-border bg-bg/85 backdrop-blur-md"
+>
+  <div class="shell flex h-16 items-center justify-between gap-6">
+    <a href="/" class="rounded-sm" aria-label="Jack Teng — home">
+      <Logo />
+    </a>
+
+    <nav aria-label="Sections" class="hidden lg:block">
+      <ul class="flex items-center gap-7">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm font-medium text-text-muted transition-colors hover:text-text"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <EmailLink
+      label="Get in touch"
+      variant="primary"
+      class="shrink-0 !px-4 !py-2.5 text-sm"
+    />
+  </div>
+</header>
