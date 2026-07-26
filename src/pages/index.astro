@@ -9,13 +9,13 @@ import Base from '../layouts/Base.astro';
 import { emailPlain } from '../site';
 
 const description =
-  'Jack Teng is a Sydney software developer building web platforms, booking and enquiry automation, and internal dashboards for clubs, venues and membership organisations across Australia and New Zealand.';
+  'Jack Teng is a Sydney software developer who replaces spreadsheets, paper and disconnected apps with one system and a single database — bookings, members and payments recorded in one place. Clubs, venues and membership organisations across Australia and New Zealand.';
 
 const commitments = [
-  'Sydney-based',
+  'One system, one source of truth',
   'You deal with me directly',
   'Fixed quote before work starts',
-  'You own the code',
+  'Your data exports any time',
 ];
 
 const problems = [
@@ -24,8 +24,8 @@ const problems = [
     body: 'Some get answered twice, some never get answered at all, and nobody can tell which is which.',
   },
   {
-    title: 'Registration runs on a spreadsheet',
-    body: 'One person babysits it, and everything stops when they are away or the file gets two versions.',
+    title: 'Registration runs on a spreadsheet and a paper diary',
+    body: 'One person babysits both, and everything stops when they are away — or when the file quietly forks into two versions.',
   },
   {
     title: 'Confirmations are typed out by hand',
@@ -40,8 +40,8 @@ const problems = [
     body: 'Opening hours, dress code, how to book, where to park, whether guests are allowed. Every single day.',
   },
   {
-    title: 'No single view of what is actually booked',
-    body: 'Capacity, payments and no-shows live in different places, so the real numbers arrive too late to act on.',
+    title: 'The same information lives in four places',
+    body: 'A spreadsheet, a paper diary, an inbox and someone’s memory — and nobody can say which one is right today.',
   },
 ];
 
@@ -73,40 +73,17 @@ const services: { icon: IconName; name: string; summary: string; includes: strin
     ],
   },
   {
-    icon: 'dashboard',
-    name: 'Platforms, dashboards and AI where it helps',
+    icon: 'database',
+    name: 'One system, with a proper database behind it',
     summary:
-      'Custom software for the parts of your operation that no off-the-shelf product fits, with a single place to see what is booked, paid and outstanding.',
+      'The replacement for five disconnected tools. Bookings, members, events and payments held in a single database instead of scattered across spreadsheets, paper and inboxes.',
     includes: [
-      'Purpose-built platforms for your own workflows',
-      'Dashboards showing bookings, capacity and payments in one view',
-      'Member and customer records that stay accurate',
-      'An assistant that answers from your own documents and policies',
-      'Honest advice on where AI is the wrong tool — often it is',
+      'One place for bookings, members, events and payments',
+      'A real database, not spreadsheet tabs that fork into versions',
+      'Your existing spreadsheet data imported and checked, not abandoned',
+      'Dashboards reading from that one source, so the numbers agree',
+      'Everything exportable at any time — no lock-in',
     ],
-  },
-];
-
-const audiences = [
-  {
-    name: 'Clubs, venues and membership organisations',
-    body: 'Sports and community clubs, function centres, studios, associations and social leagues. Registrations, recurring events, member communication and admin — the work I know best.',
-    primary: true,
-  },
-  {
-    name: 'Small and local businesses',
-    body: 'If enquiries, bookings or quotes are being handled by hand, the same tools apply.',
-    primary: false,
-  },
-  {
-    name: 'Independent professionals',
-    body: 'A site that looks the part and an intake process that does not lose people.',
-    primary: false,
-  },
-  {
-    name: 'Founders and startups',
-    body: 'Landing pages, internal tools and first-version platforms, built quickly and honestly scoped.',
-    primary: false,
   },
 ];
 
@@ -143,6 +120,14 @@ const platformPoints = [
     body: 'Bookings, capacity, payments and enquiries in a single view built around how you actually work.',
   },
   {
+    title: 'One record, not four copies of it',
+    body: 'Everything reads from and writes to the same database, so there is no re-typing, no version conflict, and no argument about which file is current.',
+  },
+  {
+    title: 'Held in a database, not in files',
+    body: 'Structured records with real relationships between members, bookings and payments — encrypted in transit, rather than documents sitting on somebody’s laptop.',
+  },
+  {
     title: 'Obvious rather than clever',
     body: 'Designed for staff of any technical confidence to use correctly on a busy shift, first time.',
   },
@@ -152,7 +137,7 @@ const platformPoints = [
   },
   {
     title: 'Yours to keep',
-    body: 'Standard technology and no lock-in, so you are never dependent on one developer to keep it running.',
+    body: 'Standard technology, no lock-in, and a full export whenever you ask — so you are never dependent on one developer.',
   },
 ];
 
@@ -174,6 +159,14 @@ const faqs = [
     a: 'Usually very little. Most sites of this kind host for free or a few dollars a month, plus your domain. Automation that sends email or SMS has per-message costs. I will tell you the real running cost before you commit, not after.',
   },
   {
+    q: 'We have years of data in spreadsheets. Do we lose it?',
+    a: 'No. Migrating what you already have is part of the build, not an extra line item. Existing spreadsheets get imported and checked against the originals, and the messy parts — duplicate members, inconsistent dates, half-finished rows — get sorted out as part of that. You keep your original files too; nothing is thrown away.',
+  },
+  {
+    q: 'Where would our data live, and who can see it?',
+    a: 'In a single database hosted with a managed cloud provider — not in files on somebody’s laptop or a shared drive that everyone can edit. Traffic between your staff and the system is encrypted. Hosting location, access levels, backups and how long records are kept are set out in your proposal, because the right answers depend on what you are storing and who needs to reach it. You can export everything at any time.',
+  },
+  {
     q: 'Do we actually need AI for this?',
     a: 'Often no, and I will say so. A reminder that sends on a schedule does not need a language model. AI earns its place when the task involves reading unstructured text — enquiries, documents, forms — and I will point you at the simpler option when one exists.',
   },
@@ -193,20 +186,22 @@ const faqs = [
     <div class="shell">
       <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
         <div>
-          <p class="eyebrow">Sydney &middot; Australia &amp; New Zealand</p>
+          <p class="eyebrow">
+            For clubs, venues &amp; membership organisations
+          </p>
 
           <h1
             class="mt-5 text-4xl leading-[1.08] font-bold sm:text-5xl lg:text-[3.4rem]"
           >
-            Software, platforms and automation for clubs, venues and
-            membership organisations.
+            One system to run your whole operation &mdash; not five apps, a
+            spreadsheet and a paper diary.
           </h1>
 
           <p class="mt-7 max-w-xl text-lg leading-relaxed text-text-muted">
-            I&rsquo;m Jack Teng, a software developer in Sydney. I design and
-            build the platforms that run your bookings, registrations and
-            member admin &mdash; and the automation that keeps them running
-            without costing staff time.
+            I&rsquo;m Jack Teng, a software developer in Sydney. I replace
+            scattered tools with a single platform and one database behind it,
+            so every booking, member and payment is recorded in one place
+            &mdash; and nothing depends on who is on shift.
           </p>
 
           <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -290,36 +285,6 @@ const faqs = [
       }
     </div>
 
-    <!-- Broad audiences, kept after the venue-led framing so the pitch
-         stays specific without turning other work away. -->
-    <div class="mt-16 border-t border-border pt-14">
-      <h3 class="font-display text-2xl font-bold">Who I build for</h3>
-      <div class="mt-8 grid gap-6 sm:grid-cols-2">
-        {
-          audiences.map((a) => (
-            <div
-              class={
-                a.primary
-                  ? 'rounded-xl border border-accent/40 bg-accent-wash p-6 sm:col-span-2'
-                  : 'p-1'
-              }
-            >
-              <h4 class="font-display text-base font-bold">
-                {a.name}
-                {a.primary && (
-                  <span class="ml-2.5 align-middle text-[0.6875rem] font-semibold tracking-wide text-accent-strong uppercase">
-                    Where I focus
-                  </span>
-                )}
-              </h4>
-              <p class="mt-2.5 text-sm leading-relaxed text-text-muted">
-                {a.body}
-              </p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
   </Section>
 
   <!-- ── Approach ──────────────────────────────────────────────────── -->
@@ -327,7 +292,7 @@ const faqs = [
     id="approach"
     eyebrow="Approach"
     title="One connected system, not five disconnected tools."
-    lede="Most operational problems are not caused by missing software. They are caused by software that does not talk to itself, so people become the glue between the parts."
+    lede="Most operational problems are not caused by missing software. They are caused by information sitting in separate places that do not talk to each other, so people become the glue — re-typing the same booking into a spreadsheet, a diary and an email. One system with one database behind it removes the glue."
     tinted
   >
     <FlowDiagram />
@@ -367,7 +332,7 @@ const faqs = [
     id="platform"
     eyebrow="The result"
     title="Built to be opened every day."
-    lede="Operational software is judged on a busy night, not in a demo. That shapes every decision in it."
+    lede="Operational software is judged on a busy night, not in a demo. Everything it shows comes from one database, so what you are looking at is the record itself — not somebody's copy of it."
   >
     <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
       <div class="order-2 lg:order-1">
@@ -411,13 +376,15 @@ const faqs = [
             consequences on the night.
           </p>
           <p>
-            Most of my work is operational rather than decorative:
-            registrations, bookings, scheduling, member records, internal
-            dashboards. Systems that staff use every shift and that have to
-            behave predictably while several people act on the same
-            information. That kind of work rewards understanding a process
-            properly before writing any code, which is how I start every
-            project.
+            Most of my work is consolidation. An operation runs on a
+            spreadsheet, a paper diary, an inbox and three apps that do not
+            talk to each other, and my job is to replace all of it with one
+            system and one database &mdash; registrations, bookings,
+            scheduling, member records, and the dashboard over the top of
+            them. Systems staff use every shift, which have to behave
+            predictably while several people act on the same information at
+            once. That kind of work rewards understanding a process properly
+            before writing any code, which is how I start every project.
           </p>
           <p>
             You deal with me directly. There is no account manager, no handover
