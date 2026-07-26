@@ -1,76 +1,168 @@
 ---
-import { emailEncoded, emailPlain, enquiryBody, enquirySubject } from '../site';
+import { emailEncoded, emailPlain } from '../site';
 
 /**
- * Email link with the address kept out of the HTML source.
+ * Email call-to-action. Copies the address to the clipboard.
  *
- * The address is base64-encoded in a data attribute and assembled into a
- * mailto: URL in the browser. Scrapers that parse static HTML find no
- * address. This is mitigation, not immunity — a JS-executing crawler will
- * still resolve it.
+ * Deliberately not a mailto: link. A mailto: does nothing at all on a machine
+ * with no registered mail handler — common for anyone who lives in webmail —
+ * and it fails silently, so the visitor concludes the site is broken.
  *
- * With JavaScript disabled the link is inert, so a readable fallback
- * ("hello [at] jackteng.com") is rendered in its place instead of the
- * address simply disappearing.
+ * The address is still kept out of the HTML source: base64 in a data
+ * attribute, decoded in the browser. With JavaScript off the button is never
+ * revealed and a readable `hello [at] jackteng.com` shows in its place, so the
+ * address is never simply missing.
  */
 interface Props {
   label?: string;
-  subject?: string;
-  body?: string;
   variant?: 'primary' | 'secondary' | 'inline';
   class?: string;
 }
 
-const {
-  label,
-  subject = enquirySubject,
-  body = enquiryBody,
-  variant = 'primary',
-  class: className = '',
-} = Astro.props;
+const { label, variant = 'primary', class: className = '' } = Astro.props;
 
-const variantClass =
-  variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
-
-// Shown until the script runs, and permanently if JS never runs.
-const text = label ?? emailPlain;
+const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
 ---
 
-<span class="js-email-wrap inline-flex">
-  <a
-    href="#contact"
-    class={`js-email ${variantClass} ${className}`}
+<span class="js-email-wrap inline-flex flex-col items-start gap-1">
+  <button
+    type="button"
+    hidden
+    class={`js-email-copy ${variantClass} ${className}`}
     data-email={emailEncoded}
-    data-subject={subject}
-    data-body={body}
     data-label={label ?? ''}
   >
-    {text}
-  </a>
+    {/* Both labels share one grid cell so the button width is the wider of
+        the two and never changes when it swaps to "Copied". They toggle with
+        `invisible` (visibility) rather than `hidden` (display: none) — a
+        display:none grid item leaves the grid and stops contributing to that
+        width, which is exactly the layout shift this avoids. Visibility
+        hidden is still ignored by screen readers. */}
+    <span class="grid justify-items-center">
+      <span class="js-email-idle col-start-1 row-start-1">{label ?? ''}</span>
+      <span class="js-email-done invisible col-start-1 row-start-1">
+        <span aria-hidden="true">&#10003;</span> Copied
+      </span>
+    </span>
+  </button>
+
+  <span class="js-email-fallback text-sm text-text-muted">{emailPlain}</span>
 </span>
 
 <script>
-  // Runs once for every EmailLink on the page. Astro dedupes this module.
-  document.querySelectorAll<HTMLAnchorElement>('a.js-email').forEach((el) => {
-    const encoded = el.dataset.email;
-    if (!encoded) return;
-
-    let address: string;
+  const decode = (value: string): string | null => {
     try {
-      address = atob(encoded);
+      return atob(value);
     } catch {
-      return; // Leave the readable fallback in place.
+      return null;
     }
+  };
 
-    const params = new URLSearchParams();
-    if (el.dataset.subject) params.set('subject', el.dataset.subject);
-    if (el.dataset.body) params.set('body', el.dataset.body);
+  // One shared live region for every button on the page.
+  let live: HTMLElement | null = null;
+  const announce = (message: string) => {
+    if (!live) {
+      live = document.createElement('div');
+      live.setAttribute('aria-live', 'polite');
+      live.className = 'sr-only';
+      document.body.append(live);
+    }
+    live.textContent = '';
+    window.setTimeout(() => {
+      if (live) live.textContent = message;
+    }, 40);
+  };
 
-    const query = params.toString().replace(/\+/g, '%20');
-    el.href = `mailto:${address}${query ? `?${query}` : ''}`;
+  const copyText = async (text: string): Promise<boolean> => {
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        // Permission denied or unsupported — fall through.
+      }
+    }
+    // Older browsers, and pages served over plain http.
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.opacity = '0';
+      document.body.append(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      return ok;
+    } catch {
+      return false;
+    }
+  };
 
-    // Links without an explicit label were displaying the obfuscated
-    // fallback; swap in the real address now that it is resolvable.
-    if (!el.dataset.label) el.textContent = address;
+  /**
+   * Copy is unavailable (permission denied, or an unfocused document).
+   * Show the address next to the button so it can be selected by hand —
+   * without overwriting the button's own label, which on the hero CTA is
+   * the call to action itself.
+   */
+  const showManualAddress = (btn: HTMLButtonElement, address: string) => {
+    const wrap = btn.parentElement;
+    if (!wrap) return;
+    let note = wrap.querySelector<HTMLElement>('.js-email-manual');
+    if (!note) {
+      note = document.createElement('span');
+      // `select-all` makes a single click select the whole address.
+      note.className = 'js-email-manual select-all text-sm text-text-muted';
+      wrap.append(note);
+    }
+    note.textContent = address;
+  };
+
+  document
+    .querySelectorAll<HTMLButtonElement>('button.js-email-copy')
+    .forEach((btn) => {
+      const address = decode(btn.dataset.email ?? '');
+      if (!address) return; // Leave the readable fallback in place.
+
+      const idle = btn.querySelector<HTMLElement>('.js-email-idle')!;
+      const done = btn.querySelector<HTMLElement>('.js-email-done')!;
+
+      // Buttons with no explicit label display the address itself.
+      if (!btn.dataset.label) idle.textContent = address;
+
+      btn.setAttribute('aria-label', `Copy email address ${address}`);
+      btn.hidden = false;
+
+      // The plain-text fallback exists only for the no-JS case.
+      btn.parentElement?.querySelector('.js-email-fallback')?.remove();
+
+      let timer: number | undefined;
+
+      btn.addEventListener('click', async () => {
+        const ok = await copyText(address);
+
+        if (!ok) {
+          showManualAddress(btn, address);
+          announce(`Copying is blocked in this browser. The address is ${address}`);
+          return;
+        }
+
+        idle.classList.add('invisible');
+        done.classList.remove('invisible');
+        announce(`${address} copied to clipboard`);
+
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          done.classList.add('invisible');
+          idle.classList.remove('invisible');
+        }, 2200);
+      });
+    });
+
+  // Upgrade any inline obfuscated address to the real one.
+  document.querySelectorAll<HTMLElement>('.js-email-text').forEach((el) => {
+    const address = decode(el.dataset.email ?? '');
+    if (address) el.textContent = address;
   });
 </script>

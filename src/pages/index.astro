@@ -6,7 +6,7 @@ import Section from '../components/Section.astro';
 import DashboardArt from '../components/art/DashboardArt.astro';
 import HeroArt from '../components/art/HeroArt.astro';
 import Base from '../layouts/Base.astro';
-import { emailPlain } from '../site';
+import { emailEncoded, emailPlain } from '../site';
 
 const description =
   'Jack Teng is a Sydney software developer who replaces spreadsheets, paper and disconnected apps with one system and a single database — bookings, members and payments recorded in one place. Clubs, venues and membership organisations across Australia and New Zealand.';
@@ -144,7 +144,7 @@ const platformPoints = [
 const faqs = [
   {
     q: 'How does pricing work?',
-    a: 'A short conversation, then a written scope with a fixed price. No hourly billing. A deposit starts the work, the balance is due on completion.',
+    a: 'A free 30-minute call about what you actually need, then a written scope with a fixed price. No hourly billing. A deposit starts the work, the balance is due on completion.',
   },
   {
     q: 'How long does it take?',
@@ -482,11 +482,15 @@ const faqs = [
             </p>
 
             <div class="mt-8">
-              <EmailLink label="Email me" variant="primary" />
+              <EmailLink label="Copy email address" variant="primary" />
             </div>
 
             <p class="mt-5 text-sm text-text-muted">
-              Or write to <span class="font-medium text-text">{emailPlain}</span>
+              Or write to
+              <span
+                class="js-email-text font-medium text-text"
+                data-email={emailEncoded}>{emailPlain}</span
+              >
             </p>
           </div>
 
@@ -517,8 +521,8 @@ const faqs = [
               </li>
             </ol>
             <p class="mt-6 text-xs leading-relaxed text-text-muted">
-              If the email button opens your mail app with these prompts
-              already filled in, just type over them.
+              None of it has to be exact. A couple of lines on each is plenty
+              to work out whether I can help.
             </p>
           </div>
         </div>

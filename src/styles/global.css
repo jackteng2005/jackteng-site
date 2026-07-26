@@ -106,6 +106,13 @@
    ------------------------------------------------------------------ */
 
 @layer base {
+  /* The `hidden` attribute maps to a UA `display: none` that any author
+     display utility beats — `.btn` is `inline-flex`, so a hidden button
+     would otherwise still render. */
+  [hidden] {
+    display: none !important;
+  }
+
   html {
     scroll-behavior: smooth;
     /* Keep anchored section headings clear of the sticky header. */

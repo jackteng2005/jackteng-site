@@ -1,6 +1,5 @@
 ---
 import { nav } from '../site';
-import EmailLink from './EmailLink.astro';
 import Logo from './Logo.astro';
 
 /**
@@ -36,10 +35,8 @@ import Logo from './Logo.astro';
       </ul>
     </nav>
 
-    <EmailLink
-      label="Get in touch"
-      variant="primary"
-      class="shrink-0 !px-4 !py-2.5 text-sm"
-    />
+    <a href="#contact" class="btn btn-primary shrink-0 !px-4 !py-2.5 text-sm">
+      Get in touch
+    </a>
   </div>
 </header>

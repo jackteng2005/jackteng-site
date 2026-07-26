@@ -42,20 +42,8 @@ export const nav = [
 ] as const;
 
 /**
- * Default enquiry template. Pre-filling the subject and body is what
- * replaces a qualifying contact form: the prospect is prompted for the
- * same fields a form would have collected.
+ * The enquiry template that used to prefill a mailto: subject and body was
+ * removed along with the mailto links. The same prompts are now printed in
+ * the contact section itself, where every visitor sees them rather than only
+ * those with a working mail client.
  */
-export const enquirySubject = 'Project enquiry';
-
-export const enquiryBody = [
-  'Hi Jack,',
-  '',
-  'Organisation:',
-  'What we need:',
-  'Rough timeline:',
-  'Budget range (if known):',
-  'Website (if any):',
-  '',
-  'Thanks,',
-].join('\n');
