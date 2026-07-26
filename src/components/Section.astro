@@ -4,8 +4,14 @@ interface Props {
   eyebrow?: string;
   title: string;
   lede?: string;
-  /** Tints the band so adjacent sections separate without hard rules. */
-  tinted?: boolean;
+  /**
+   * `tinted` separates adjacent bands without a hard rule. `invert` forces
+   * the dark palette on this band whatever the active theme, which is what
+   * gives the page some depth instead of one flat off-white run.
+   */
+  variant?: 'default' | 'tinted' | 'invert';
+  /** Vertical rhythm. `roomy` is for the band that should dominate. */
+  size?: 'default' | 'roomy';
   class?: string;
 }
 
@@ -14,24 +20,33 @@ const {
   eyebrow,
   title,
   lede,
-  tinted = false,
+  variant = 'default',
+  size = 'default',
   class: className = '',
 } = Astro.props;
 
 const headingId = id ? `${id}-heading` : undefined;
+
+const variantClass = {
+  default: '',
+  tinted: 'bg-surface-sunken',
+  invert: 'band-invert',
+}[variant];
+
+const sizeClass = size === 'roomy' ? 'py-28 sm:py-36' : 'py-20 sm:py-24';
 ---
 
 <section
   id={id}
   aria-labelledby={headingId}
-  class={`py-20 sm:py-24 ${tinted ? 'bg-surface-sunken' : ''} ${className}`}
+  class={`${sizeClass} ${variantClass} ${className}`}
 >
   <div class="shell">
     <div class="max-w-2xl">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h2
         id={headingId}
-        class="mt-3 text-3xl font-bold sm:text-4xl"
+        class="mt-3 text-3xl leading-[1.1] font-bold sm:text-4xl lg:text-[2.875rem]"
       >
         {title}
       </h2>

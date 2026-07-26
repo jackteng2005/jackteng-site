@@ -43,5 +43,42 @@ const { title, description, indexable } = Astro.props;
     </main>
 
     <Footer />
+
+    <script>
+      // Scroll reveal. The `reveal` class is applied here rather than in the
+      // markup so that if this script never runs, nothing is left at opacity 0.
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        const targets =
+          document.querySelectorAll<HTMLElement>('.card, [data-reveal]');
+
+        targets.forEach((el) => el.classList.add('reveal'));
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+
+              // Stagger by position within the parent grid.
+              const siblings = el.parentElement
+                ? [...el.parentElement.children]
+                : [];
+              const index = Math.max(0, siblings.indexOf(el));
+              el.style.transitionDelay = `${Math.min(index, 5) * 70}ms`;
+
+              el.classList.add('is-visible');
+              observer.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      }
+    </script>
   </body>
 </html>

@@ -231,6 +231,78 @@
     background-color: var(--surface);
     border: 1px solid var(--border);
     border-radius: 0.875rem;
+    transition:
+      transform 200ms ease,
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow);
+  }
+
+  /**
+   * Forces the dark palette on a single band regardless of the active theme.
+   * Every component inside reads the same semantic tokens, so overriding the
+   * custom properties here re-themes the whole band with no component changes.
+   */
+  .band-invert {
+    color-scheme: dark;
+
+    --bg: #0b1226;
+    --surface: #131c36;
+    --surface-sunken: #0e1730;
+    --text: #edeff5;
+    --text-muted: #a2aabf;
+    --border: #24304f;
+    --border-strong: #33406a;
+    --control-border: #5a6a94;
+
+    --accent: #35c9c3;
+    --accent-strong: #57d6d0;
+    --accent-contrast: #06121f;
+    --accent-wash: #12292f;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  /* Technology chips. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    border-radius: 999px;
+    padding: 0.4375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /**
+   * Scroll reveal. The `reveal` class is added by JavaScript, never by the
+   * markup — if the script fails or is blocked, nothing is left invisible.
+   */
+  .reveal {
+    opacity: 0;
+    /* The individual `translate` property, not `transform` — `.card:hover`
+       uses `transform`, and a `.reveal.is-visible` transform would out-
+       specify it and kill the hover lift. */
+    translate: 0 14px;
+    transition:
+      opacity 600ms ease,
+      translate 600ms ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    translate: 0 0;
   }
 
   .eyebrow {

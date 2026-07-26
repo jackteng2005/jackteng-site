@@ -3,6 +3,7 @@ import EmailLink from '../components/EmailLink.astro';
 import FlowDiagram from '../components/FlowDiagram.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 import Section from '../components/Section.astro';
+import TechRow from '../components/TechRow.astro';
 import DashboardArt from '../components/art/DashboardArt.astro';
 import HeroArt from '../components/art/HeroArt.astro';
 import Base from '../layouts/Base.astro';
@@ -30,14 +31,6 @@ const problems = [
   {
     title: 'Confirmations are typed out by hand',
     body: 'Every booking costs someone five minutes of copying names, dates and details into an email.',
-  },
-  {
-    title: 'Nothing follows up automatically',
-    body: 'An enquiry that is not answered the same day usually goes quiet — and nobody notices it went quiet.',
-  },
-  {
-    title: 'Staff answer the same five questions daily',
-    body: 'Opening hours, dress code, how to book, where to park, whether guests are allowed. Every single day.',
   },
   {
     title: 'The same information lives in four places',
@@ -116,24 +109,16 @@ const process: { icon: IconName; step: string; title: string; body: string }[] =
 
 const platformPoints = [
   {
-    title: 'One place, not five tabs',
-    body: 'Bookings, capacity, payments and enquiries in a single view built around how you actually work.',
-  },
-  {
     title: 'One record, not four copies of it',
-    body: 'Everything reads from and writes to the same database, so there is no re-typing, no version conflict, and no argument about which file is current.',
+    body: 'Bookings, capacity, payments and enquiries in a single view. Everything reads from and writes to the same database, so there is no re-typing and no argument about which file is current.',
   },
   {
     title: 'Held in a database, not in files',
     body: 'Structured records with real relationships between members, bookings and payments — encrypted in transit, rather than documents sitting on somebody’s laptop.',
   },
   {
-    title: 'Obvious rather than clever',
-    body: 'Designed for staff of any technical confidence to use correctly on a busy shift, first time.',
-  },
-  {
     title: 'Accurate under pressure',
-    body: 'Live numbers that stay right when several people are acting on the same information at once.',
+    body: 'Live numbers that stay right when several people are acting on the same information at once, and obvious enough for any staff member to use correctly on a busy shift.',
   },
   {
     title: 'Yours to keep',
@@ -182,22 +167,32 @@ const faqs = [
   description={description}
 >
   <!-- ── Hero ──────────────────────────────────────────────────────── -->
-  <section class="overflow-hidden pt-14 pb-20 sm:pt-20 sm:pb-24">
+  <section class="relative overflow-hidden pt-14 pb-20 sm:pt-20 sm:pb-24">
+    <!-- Ambient accent glow. Decorative, sits behind everything. -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -top-40 -right-40 -z-10 h-[38rem] w-[38rem] rounded-full opacity-60 blur-3xl"
+      style="background: radial-gradient(circle, var(--accent-wash) 0%, transparent 68%);"
+    >
+    </div>
+
     <div class="shell">
-      <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+      <div class="grid items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
         <div>
           <p class="eyebrow">
             For clubs, venues &amp; membership organisations
           </p>
 
           <h1
-            class="mt-5 text-4xl leading-[1.08] font-bold sm:text-5xl lg:text-[3.4rem]"
+            class="mt-6 text-[2.75rem] leading-[1.03] font-bold sm:text-6xl lg:text-[4.25rem]"
           >
-            One system to run your whole operation &mdash; not five apps, a
-            spreadsheet and a paper diary.
+            One system to run your whole operation.
+            <span class="block text-accent-strong">
+              Not five apps and a spreadsheet.
+            </span>
           </h1>
 
-          <p class="mt-7 max-w-xl text-lg leading-relaxed text-text-muted">
+          <p class="mt-8 max-w-xl text-lg leading-relaxed text-text-muted">
             I&rsquo;m Jack Teng, a software developer in Sydney. I replace
             scattered tools with a single platform and one database behind it,
             so every booking, member and payment is recorded in one place
@@ -205,12 +200,12 @@ const faqs = [
           </p>
 
           <div class="mt-10 flex flex-wrap items-center gap-4">
-            <EmailLink label="Start a conversation" variant="primary" />
+            <EmailLink label="Start with a 30-minute call" variant="primary" />
             <a href="#services" class="btn btn-secondary">See what I build</a>
           </div>
         </div>
 
-        <div class="lg:pl-4">
+        <div class="lg:pl-2">
           <HeroArt />
         </div>
       </div>
@@ -227,6 +222,8 @@ const faqs = [
           ))
         }
       </ul>
+
+      <TechRow />
     </div>
   </section>
 
@@ -236,9 +233,9 @@ const faqs = [
     eyebrow="The problems I solve"
     title="If any of this sounds familiar, it is fixable."
     lede="None of these need a bigger team. They need the repetitive part handed to software that does not forget."
-    tinted
+    variant="tinted"
   >
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
         problems.map((p) => (
           <li class="card p-6">
@@ -293,7 +290,8 @@ const faqs = [
     eyebrow="Approach"
     title="One connected system, not five disconnected tools."
     lede="Most operational problems are not caused by missing software. They are caused by information sitting in separate places that do not talk to each other, so people become the glue — re-typing the same booking into a spreadsheet, a diary and an email. One system with one database behind it removes the glue."
-    tinted
+    variant="invert"
+    size="roomy"
   >
     <FlowDiagram />
 
@@ -365,7 +363,7 @@ const faqs = [
   </Section>
 
   <!-- ── About ─────────────────────────────────────────────────────── -->
-  <Section id="about" eyebrow="About" title="Who you would be working with." tinted>
+  <Section id="about" eyebrow="About" title="Who you would be working with." variant="tinted">
     <div class="grid gap-10 lg:grid-cols-5">
       <div class="lg:col-span-3">
         <div class="space-y-5 text-base leading-relaxed text-text-muted">

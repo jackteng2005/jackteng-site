@@ -1,0 +1,64 @@
+---
+/**
+ * Technology chips.
+ *
+ * This is the honest version of the "proof strip" that agency sites put under
+ * the hero. Stat rows ("100+ automations built") require a track record;
+ * naming the tools you actually work with does not, and it signals technical
+ * range to a prospect within the first screen.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * JACK — THIS LIST IS DELIBERATELY SHORT.
+ *
+ * It currently contains only what I can verify from this repository, because
+ * a padded list is worse than a short one: anyone technical will spot it, and
+ * you may be asked about anything named here in a discovery call.
+ *
+ * Replace the arrays below with what you genuinely use. Suggested groups:
+ *   build      — languages, frameworks, databases, hosting
+ *   integrate  — payments, mail, calendars, CRMs, automation platforms
+ *   ai         — model providers and tooling
+ *
+ * Delete any group you leave empty; empty groups do not render.
+ * ─────────────────────────────────────────────────────────────────────────
+ */
+const groups: { label: string; items: string[] }[] = [
+  {
+    label: 'Build',
+    items: ['TypeScript', 'Astro', 'Tailwind CSS', 'Node.js', 'Git'],
+  },
+  // {
+  //   label: 'Integrate',
+  //   items: ['Stripe', 'Google Workspace', 'Xero', 'Twilio', 'Make'],
+  // },
+  // {
+  //   label: 'AI',
+  //   items: ['Claude', 'OpenAI'],
+  // },
+].filter((g) => g.items.length > 0);
+---
+
+{
+  groups.length > 0 && (
+    <div class="mt-16 border-t border-border pt-10" data-reveal>
+      <p class="text-xs font-medium tracking-wide text-text-muted uppercase">
+        Built with
+      </p>
+
+      <div class="mt-6 space-y-5">
+        {groups.map((group) => (
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-3">
+            {groups.length > 1 && (
+              <span class="w-24 shrink-0 text-xs font-semibold text-accent-strong">
+                {group.label}
+              </span>
+            )}
+            {group.items.map((item) => (
+              <span class="chip">{item}</span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
