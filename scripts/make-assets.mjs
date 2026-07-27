@@ -136,3 +136,35 @@ for (const [name, size] of [
     .toFile(path.join(OUT, name));
   console.log(`wrote ${name} (${size}x${size})`);
 }
+
+// ---------- Profile picture ----------
+// Google, LinkedIn and Slack all crop avatars to a circle, so the mark is
+// sized to keep its corners inside the inscribed circle instead of being
+// clipped. Square canvas, solid background — a transparent avatar renders
+// unpredictably against light and dark chrome.
+const AV = 1024;
+const avMarkW = 700; // corners land ~58px inside the 512px radius
+const avMarkH = Math.round((tm.height / tm.width) * avMarkW);
+
+const avatarMark = await sharp(trimmed)
+  .resize({ width: avMarkW, height: avMarkH, fit: 'contain', background: BG })
+  .toBuffer();
+
+await sharp({
+  create: { width: AV, height: AV, channels: 3, background: BG },
+})
+  .composite([
+    {
+      input: avatarMark,
+      left: Math.round((AV - avMarkW) / 2),
+      top: Math.round((AV - avMarkH) / 2),
+    },
+  ])
+  .png({ compressionLevel: 9 })
+  .toFile('brand/jack-teng-jt-avatar-1024.png');
+
+const cornerDistance = Math.round(Math.hypot(avMarkW / 2, avMarkH / 2));
+console.log(
+  `wrote brand/jack-teng-jt-avatar-1024.png (${AV}x${AV}), ` +
+    `mark corner at ${cornerDistance}px of ${AV / 2}px circle radius`
+);
