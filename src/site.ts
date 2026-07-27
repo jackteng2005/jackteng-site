@@ -33,12 +33,17 @@ export const emailEncoded = Buffer.from(
   'utf8'
 ).toString('base64');
 
+/**
+ * Root-relative rather than bare fragments: the nav renders on /demo too,
+ * where a bare `#problems` would point at a section that does not exist on
+ * that page and silently do nothing.
+ */
 export const nav = [
-  { href: '#problems', label: 'Problems' },
-  { href: '#services', label: 'Services' },
-  { href: '#approach', label: 'Approach' },
-  { href: '#platform', label: 'Platform' },
-  { href: '#about', label: 'About' },
+  { href: '/#problems', label: 'Problems' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#approach', label: 'Approach' },
+  { href: '/demo', label: 'Demo' },
+  { href: '/#about', label: 'About' },
 ] as const;
 
 /**

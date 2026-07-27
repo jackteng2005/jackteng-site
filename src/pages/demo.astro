@@ -1,0 +1,166 @@
+---
+import Demo from '../components/Demo.astro';
+import EmailLink from '../components/EmailLink.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import Base from '../layouts/Base.astro';
+
+/**
+ * Standalone demonstration page.
+ *
+ * Built to be linked directly in outreach — "here is the thing working" is a
+ * far stronger opening than "have a look at my website". It also carries the
+ * credibility the site cannot get from client work: a prospect can verify the
+ * capability themselves in thirty seconds, without a case study existing.
+ */
+const description =
+  'A working demonstration of event registration for a members club: what the member sees, the confirmations and reminders that fire automatically, and what staff see. Fictional data, nothing stored.';
+
+const replaces: { icon: IconName; before: string; after: string }[] = [
+  {
+    icon: 'browser',
+    before: 'A form that emails someone, or a phone call',
+    after: 'A registration that records itself and confirms instantly',
+  },
+  {
+    icon: 'automation',
+    before: 'Confirmations and reminders typed out by hand',
+    after: 'Sent on a schedule, every time, without staff time',
+  },
+  {
+    icon: 'dashboard',
+    before: 'A spreadsheet somebody has to keep current',
+    after: 'One live view of capacity, guests and payments',
+  },
+];
+
+const notes = [
+  'Everything here runs in your browser. Nothing is sent anywhere and nothing is stored.',
+  'The club, the event and the names in the staff table are invented.',
+  'A real build is shaped around how your organisation already works — this is a demonstration of the mechanics, not a product you would receive as-is.',
+];
+---
+
+<Base title="Live demonstration" description={description}>
+  <!-- ── Intro ─────────────────────────────────────────────────────── -->
+  <section class="pt-14 pb-12 sm:pt-20">
+    <div class="shell">
+      <p class="eyebrow">Live demonstration</p>
+
+      <h1
+        class="mt-6 max-w-3xl text-[2.5rem] leading-[1.05] font-bold sm:text-5xl lg:text-[3.5rem]"
+      >
+        Event registration, end to end.
+      </h1>
+
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-text-muted">
+        Register for a fictional club event below and watch what a real system
+        would do next &mdash; the member&rsquo;s confirmation, the reminder
+        before the night, the follow-up afterwards, and the row that appears
+        for whoever is on the desk.
+      </p>
+
+      <ul class="mt-8 max-w-2xl space-y-2.5">
+        {
+          notes.map((n) => (
+            <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+              <span aria-hidden="true" class="mt-0.5 shrink-0 text-accent">
+                <Icon name="check" class="size-4" />
+              </span>
+              {n}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── The demo itself ───────────────────────────────────────────── -->
+  <section aria-labelledby="try-heading" class="pb-20">
+    <div class="shell">
+      <h2 id="try-heading" class="sr-only">Try the demonstration</h2>
+      <Demo />
+    </div>
+  </section>
+
+  <!-- ── What it replaces ──────────────────────────────────────────── -->
+  <section
+    aria-labelledby="replaces-heading"
+    class="band-raised py-20 sm:py-24"
+  >
+    <div class="shell">
+      <div class="max-w-2xl">
+        <p class="eyebrow">What it replaces</p>
+        <h2
+          id="replaces-heading"
+          class="mt-3 text-3xl leading-[1.1] font-bold sm:text-4xl lg:text-[2.875rem]"
+        >
+          The manual version of the same job.
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-text-muted">
+          None of this is difficult work. It is just work that somebody is
+          currently doing by hand, every single event.
+        </p>
+      </div>
+
+      <div class="mt-14 grid gap-6 lg:grid-cols-3">
+        {
+          replaces.map((r) => (
+            <div class="card p-7">
+              <span class="inline-flex size-11 items-center justify-center rounded-lg bg-accent-wash text-accent-strong">
+                <Icon name={r.icon} class="size-5" />
+              </span>
+              <p class="mt-6 text-xs font-semibold tracking-wide text-text-muted uppercase">
+                Today
+              </p>
+              <p class="mt-1.5 text-sm leading-relaxed text-text-muted">
+                {r.before}
+              </p>
+              <p class="mt-5 text-xs font-semibold tracking-wide text-accent-strong uppercase">
+                With a system
+              </p>
+              <p class="mt-1.5 text-sm leading-relaxed">{r.after}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Close ─────────────────────────────────────────────────────── -->
+  <section aria-labelledby="next-heading" class="py-20 sm:py-24">
+    <div class="shell">
+      <div class="card p-8 shadow-card sm:p-12">
+        <div class="max-w-2xl">
+          <p class="eyebrow">What happens next</p>
+          <h2
+            id="next-heading"
+            class="mt-3 text-3xl font-bold sm:text-4xl"
+          >
+            Yours would look different.
+          </h2>
+          <p class="mt-5 leading-relaxed text-text-muted">
+            This demonstration handles one event with one kind of booking. A
+            real one deals with your membership tiers, your capacity rules,
+            your payment process and whatever your committee needs to see at
+            the end of the month. That starts with a conversation about how it
+            works now &mdash; not a pitch.
+          </p>
+
+          <div class="mt-9 flex flex-wrap items-center gap-4">
+            <a href="/#contact" class="btn btn-primary">
+              Start with a 30-minute call
+            </a>
+            <a href="/#services" class="btn btn-secondary">See what I build</a>
+          </div>
+
+          <p class="mt-8 text-sm text-text-muted">
+            Or copy my address and write whenever it suits:
+          </p>
+          <div class="mt-3">
+            <EmailLink label="Copy email address" variant="secondary" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

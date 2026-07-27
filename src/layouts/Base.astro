@@ -96,6 +96,17 @@ const { title, description, indexable } = Astro.props;
         );
 
         targets.forEach((el) => observer.observe(el));
+
+        // Failsafe. Reveal is decoration; content being readable is not
+        // negotiable. If the observer does not fire for something — a browser
+        // quirk, an odd viewport, a page where it silently never triggers —
+        // show it anyway rather than leave it at opacity 0. This has already
+        // bitten twice, so it is belt and braces on purpose.
+        window.setTimeout(() => {
+          document
+            .querySelectorAll('.reveal:not(.is-visible)')
+            .forEach((el) => el.classList.add('is-visible'));
+        }, 2500);
       }
     </script>
   </body>
