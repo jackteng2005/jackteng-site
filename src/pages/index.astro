@@ -200,7 +200,11 @@ const faqs = [
           </p>
 
           <div class="mt-10 flex flex-wrap items-center gap-4">
-            <EmailLink label="Start with a 30-minute call" variant="primary" />
+            <!-- Navigates rather than copying: the label promises a call, and
+                 the contact section is where the address has context. -->
+            <a href="#contact" class="btn btn-primary">
+              Start with a 30-minute call
+            </a>
             <a href="#services" class="btn btn-secondary">See what I build</a>
           </div>
         </div>
@@ -290,7 +294,7 @@ const faqs = [
     eyebrow="Approach"
     title="One connected system, not five disconnected tools."
     lede="Most operational problems are not caused by missing software. They are caused by information sitting in separate places that do not talk to each other, so people become the glue — re-typing the same booking into a spreadsheet, a diary and an email. One system with one database behind it removes the glue."
-    variant="invert"
+    variant="raised"
     size="roomy"
   >
     <FlowDiagram />

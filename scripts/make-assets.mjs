@@ -43,6 +43,13 @@ const BAR = 14;
 const markH = 300;
 const markW = Math.round((tm.width / tm.height) * markH);
 
+// The site is dark, so the card is navy. The mark itself is navy-on-off-white
+// with the background baked into the raster and cannot be recoloured, so it
+// sits on its own light tile — legible, and deliberate rather than accidental.
+const TILE_PAD = 56;
+const tileW = markW + TILE_PAD * 2;
+const tileH = markH + TILE_PAD * 2;
+
 // Shapes only, no text: librsvg would fall back to a system font for any
 // text, which would be off-brand — and a link preview already renders the
 // page title and description as real text beside the image.
@@ -50,11 +57,18 @@ const backdrop = Buffer.from(`
   <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
     <defs>
       <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="2" fill="${NAVY}" opacity="0.07"/>
+        <circle cx="2" cy="2" r="2" fill="${TEAL}" opacity="0.10"/>
       </pattern>
     </defs>
-    <rect width="${W}" height="${H}" fill="${BG}"/>
+    <rect width="${W}" height="${H}" fill="${NAVY}"/>
     <rect width="${W}" height="${H}" fill="url(#dots)"/>
+    <rect
+      x="${Math.round((W - tileW) / 2)}"
+      y="${Math.round((H - BAR - tileH) / 2)}"
+      width="${tileW}"
+      height="${tileH}"
+      rx="28"
+      fill="${BG}"/>
     <rect x="0" y="${H - BAR}" width="${W}" height="${BAR}" fill="${TEAL}"/>
   </svg>`);
 
@@ -93,12 +107,30 @@ const square = await sharp({
   .png()
   .toBuffer();
 
+// Rounded, with transparent corners, so the mark reads as a deliberate tile
+// against whatever colour the browser chrome happens to be. The tile stays
+// light rather than navy: the mark's own navy is baked into the raster, so on
+// a navy icon it would vanish, and a light tile inset into navy turns to mush
+// at 32px. Same "mark on a light tile" language as the OG card.
+const radius = Math.round(side * 0.2);
+const mask = Buffer.from(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${side}" height="${side}">
+     <rect width="${side}" height="${side}" rx="${radius}" fill="#fff"/>
+   </svg>`
+);
+
+const rounded = await sharp(square)
+  .ensureAlpha()
+  .composite([{ input: mask, blend: 'dest-in' }])
+  .png()
+  .toBuffer();
+
 for (const [name, size] of [
   ['favicon-32.png', 32],
   ['favicon-192.png', 192],
   ['apple-touch-icon.png', 180],
 ]) {
-  await sharp(square)
+  await sharp(rounded)
     .resize(size, size, { kernel: 'lanczos3' })
     .png({ compressionLevel: 9 })
     .toFile(path.join(OUT, name));

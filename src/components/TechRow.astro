@@ -7,34 +7,26 @@
  * naming the tools you actually work with does not, and it signals technical
  * range to a prospect within the first screen.
  *
- * ─────────────────────────────────────────────────────────────────────────
- * JACK — THIS LIST IS DELIBERATELY SHORT.
+ * Everything listed is a tool Jack actually works with — confirmed by him, or
+ * evidenced by this repository. Keep it that way: anything named here can be
+ * asked about in a discovery call, and a padded list is worse than a short one
+ * because technical prospects spot it.
  *
- * It currently contains only what I can verify from this repository, because
- * a padded list is worse than a short one: anyone technical will spot it, and
- * you may be asked about anything named here in a discovery call.
- *
- * Replace the arrays below with what you genuinely use. Suggested groups:
- *   build      — languages, frameworks, databases, hosting
- *   integrate  — payments, mail, calendars, CRMs, automation platforms
- *   ai         — model providers and tooling
- *
- * Delete any group you leave empty; empty groups do not render.
- * ─────────────────────────────────────────────────────────────────────────
+ * Add the host (Netlify or Vercel) to "Data & platform" once deployed.
  */
 const groups: { label: string; items: string[] }[] = [
   {
     label: 'Build',
-    items: ['TypeScript', 'Astro', 'Tailwind CSS', 'Node.js', 'Git'],
+    items: ['TypeScript', 'Node.js', 'Astro', 'Tailwind CSS', 'Git'],
   },
-  // {
-  //   label: 'Integrate',
-  //   items: ['Stripe', 'Google Workspace', 'Xero', 'Twilio', 'Make'],
-  // },
-  // {
-  //   label: 'AI',
-  //   items: ['Claude', 'OpenAI'],
-  // },
+  {
+    label: 'Data & platform',
+    items: ['Firebase', 'Google Workspace'],
+  },
+  {
+    label: 'AI',
+    items: ['Claude', 'OpenAI API', 'Cursor', 'Codex', 'Lovable'],
+  },
 ].filter((g) => g.items.length > 0);
 ---
 
@@ -42,7 +34,7 @@ const groups: { label: string; items: string[] }[] = [
   groups.length > 0 && (
     <div class="mt-16 border-t border-border pt-10" data-reveal>
       <p class="text-xs font-medium tracking-wide text-text-muted uppercase">
-        Built with
+        Tools I work with
       </p>
 
       <div class="mt-6 space-y-5">

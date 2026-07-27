@@ -244,31 +244,20 @@
   }
 
   /**
-   * Forces the dark palette on a single band regardless of the active theme.
-   * Every component inside reads the same semantic tokens, so overriding the
-   * custom properties here re-themes the whole band with no component changes.
+   * Lifts a band a step above the page.
+   *
+   * The site is dark throughout, so depth now comes from going lighter rather
+   * than darker. `--surface` is raised alongside `--bg` so cards inside the
+   * band stay distinguishable from it instead of merging into one flat slab.
    */
-  .band-invert {
-    color-scheme: dark;
-
-    --bg: #0b1226;
-    --surface: #131c36;
+  .band-raised {
+    --bg: #131c36;
+    --surface: #1b2647;
     --surface-sunken: #0e1730;
-    --text: #edeff5;
-    --text-muted: #a2aabf;
-    --border: #24304f;
-    --border-strong: #33406a;
-    --control-border: #5a6a94;
-
-    --accent: #35c9c3;
-    --accent-strong: #57d6d0;
-    --accent-contrast: #06121f;
-    --accent-wash: #12292f;
-
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+    --border: #2c3a60;
+    --border-strong: #3d4d7a;
 
     background-color: var(--bg);
-    color: var(--text);
   }
 
   /* Technology chips. */

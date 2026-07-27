@@ -5,11 +5,11 @@ interface Props {
   title: string;
   lede?: string;
   /**
-   * `tinted` separates adjacent bands without a hard rule. `invert` forces
-   * the dark palette on this band whatever the active theme, which is what
-   * gives the page some depth instead of one flat off-white run.
+   * `tinted` separates adjacent bands without a hard rule. `raised` lifts a
+   * band a full step above the page, so one section can dominate instead of
+   * every band reading the same.
    */
-  variant?: 'default' | 'tinted' | 'invert';
+  variant?: 'default' | 'tinted' | 'raised';
   /** Vertical rhythm. `roomy` is for the band that should dominate. */
   size?: 'default' | 'roomy';
   class?: string;
@@ -30,7 +30,7 @@ const headingId = id ? `${id}-heading` : undefined;
 const variantClass = {
   default: '',
   tinted: 'bg-surface-sunken',
-  invert: 'band-invert',
+  raised: 'band-raised',
 }[variant];
 
 const sizeClass = size === 'roomy' ? 'py-28 sm:py-36' : 'py-20 sm:py-24';

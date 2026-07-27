@@ -17,7 +17,12 @@ const { title, description, indexable } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en-AU">
+<!--
+  Dark is forced rather than following the visitor's OS: it is the brand, not
+  a preference. The light tokens stay defined in global.css so a toggle can be
+  added later by flipping this attribute.
+-->
+<html lang="en-AU" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -52,8 +57,18 @@ const { title, description, indexable } = Astro.props;
       ).matches;
 
       if (!reduceMotion && 'IntersectionObserver' in window) {
-        const targets =
+        const candidates =
           document.querySelectorAll<HTMLElement>('.card, [data-reveal]');
+
+        // Skip anything taller than 70% of the viewport. Such an element can
+        // never be comfortably "entered", so its reveal is unreliable — the
+        // contact card at 972px on a 812px screen stayed at opacity 0 and took
+        // the whole conversion point of the page with it. A block that size
+        // fading in looks wrong regardless.
+        const maxHeight = window.innerHeight * 0.7;
+        const targets = [...candidates].filter(
+          (el) => el.getBoundingClientRect().height <= maxHeight
+        );
 
         targets.forEach((el) => el.classList.add('reveal'));
 
@@ -74,7 +89,10 @@ const { title, description, indexable } = Astro.props;
               observer.unobserve(el);
             });
           },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+          // threshold 0: any intersecting pixel is enough. A ratio-based
+          // threshold is fragile for tall elements, which is how the bug above
+          // happened in the first place.
+          { rootMargin: '0px 0px -8% 0px', threshold: 0 }
         );
 
         targets.forEach((el) => observer.observe(el));

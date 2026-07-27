@@ -152,6 +152,23 @@ const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
         done.classList.remove('invisible');
         announce(`${address} copied to clipboard`);
 
+        // The button label reverts after a moment so it reads as clickable
+        // again, but a first-time visitor needs to know *what* was copied and
+        // what to do with it — so this line is written once and left in place.
+        const wrap = btn.parentElement;
+        if (wrap) {
+          let status = wrap.querySelector<HTMLElement>('.js-email-status');
+          if (!status) {
+            status = document.createElement('span');
+            // Not aria-live: the shared live region already announced it, and
+            // two announcements for one action is worse than none.
+            status.className =
+              'js-email-status text-sm font-medium text-accent-strong';
+            wrap.append(status);
+          }
+          status.textContent = `✓ ${address} copied — paste it into your email`;
+        }
+
         window.clearTimeout(timer);
         timer = window.setTimeout(() => {
           done.classList.add('invisible');
