@@ -1,0 +1,52 @@
+# Netlify build and serving configuration.
+#
+# Netlify auto-detects Astro, but pinning this here means the build is
+# reproducible and does not change if their detection does.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Match the local toolchain. Without this Netlify picks its own default,
+  # which drifts over time and can break a build that works locally.
+  NODE_VERSION = "22"
+
+# ---------------------------------------------------------------------------
+# Security headers
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+
+    # HSTS is deliberately omitted. It is easy to switch on and genuinely
+    # painful to undo — browsers cache the policy for its full max-age, so a
+    # mistake cannot be reverted by changing this file. Worth adding once the
+    # domain has been serving HTTPS happily for a few weeks:
+    #   Strict-Transport-Security = "max-age=31536000"
+    # Leave off `includeSubDomains` unless every subdomain is HTTPS-only.
+
+# ---------------------------------------------------------------------------
+# Caching
+# ---------------------------------------------------------------------------
+
+# Astro fingerprints everything in /_astro/, so those URLs can never change
+# contents. Safe to cache for a year.
+[[headers]]
+  for = "/_astro/*"
+
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Generated brand artwork: not fingerprinted, so a shorter cache with
+# revalidation, otherwise a logo change would take a year to reach anyone.
+[[headers]]
+  for = "/*.png"
+
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
