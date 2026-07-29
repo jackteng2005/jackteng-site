@@ -4,7 +4,12 @@
  *
  * Entirely client-side. Nothing is sent anywhere, nothing is stored, and
  * the data is fictional — all stated plainly in the UI, because a demo
- * that looks like a real club's system would be misleading.
+ * that looks like a real venue's system would be misleading.
+ *
+ * Deliberately generic rather than modelled on any one kind of
+ * organisation — "Thursday Night Social" reads as plausible for a club, a
+ * community hall, an association or a venue, rather than narrowing the
+ * pitch to one of them.
  *
  * The point for a prospect is the three-panel structure: what the member
  * sees, what happens automatically, and what staff see. That is the
@@ -31,8 +36,8 @@ const seedRows = [
     class="border-b border-border bg-accent-wash px-5 py-3 text-sm text-text-muted"
   >
     <strong class="font-semibold text-text">Demonstration.</strong> Fictional
-    club, fictional data. Everything runs in your browser — nothing is sent or
-    stored.
+    venue, fictional data. Everything runs in your browser — nothing is sent
+    or stored.
   </p>
 
   <div class="grid gap-0 lg:grid-cols-2">
@@ -42,10 +47,10 @@ const seedRows = [
 
       <div class="mt-5 rounded-lg border border-border bg-surface-sunken p-5">
         <h3 class="font-display text-lg font-bold">
-          Thursday Night Championship
+          Thursday Night Social
         </h3>
         <p class="mt-1 text-sm text-text-muted">
-          Riverside Club &middot; <span data-demo-date>Thursday</span> &middot;
+          Riverside Hall &middot; <span data-demo-date>Thursday</span> &middot;
           7:00pm
         </p>
         <p class="mt-3 text-sm">
@@ -151,7 +156,7 @@ const seedRows = [
         <div class="mt-4 overflow-x-auto rounded-lg border border-border bg-surface">
           <table class="w-full min-w-[26rem] text-left text-sm">
             <caption class="sr-only">
-              Registrations for Thursday Night Championship
+              Registrations for Thursday Night Social
             </caption>
             <thead class="border-b border-border text-xs uppercase tracking-wide text-text-muted">
               <tr>
@@ -295,7 +300,7 @@ const seedRows = [
         'Immediately',
         'Email to member',
         'Registration confirmed',
-        `Hi ${firstName}, you're registered for the Thursday Night Championship on ${fmtDate.format(eventDate)} at 7:00pm${guests ? `, plus ${guests} guest${guests > 1 ? 's' : ''}` : ''}. Your place is held until 6:45pm.`
+        `Hi ${firstName}, you're registered for the Thursday Night Social on ${fmtDate.format(eventDate)} at 7:00pm${guests ? `, plus ${guests} guest${guests > 1 ? 's' : ''}` : ''}. Your place is held until 6:45pm.`
       );
 
       step(
@@ -309,14 +314,14 @@ const seedRows = [
         fmtShort.format(dayBefore),
         'SMS + email to member',
         'Reminder, 24 hours out',
-        `Reminder: your table is confirmed for tomorrow at 7:00pm. Reply CANCEL to release your place — it goes to the waitlist automatically.`
+        `Reminder: your place is confirmed for tomorrow at 7:00pm. Reply CANCEL to release it — it goes to the waitlist automatically.`
       );
 
       step(
         fmtShort.format(dayAfter),
         'Email to member',
         'Follow-up and rebooking',
-        `Thanks for coming, ${firstName}. Here are the final standings, and next week's event is open for registration — one tap to book the same table.`
+        `Thanks for coming, ${firstName}. Next week's event is open for registration — one tap to book the same spot.`
       );
 
       const tr = document.createElement('tr');
