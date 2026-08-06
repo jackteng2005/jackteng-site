@@ -41,7 +41,7 @@ const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
     <span class="grid justify-items-center">
       <span class="js-email-idle col-start-1 row-start-1">{label ?? ''}</span>
       <span class="js-email-done invisible col-start-1 row-start-1">
-        <span aria-hidden="true">&#10003;</span> Copied
+        <span aria-hidden="true">&#10003;</span> <span class="js-email-done-text"></span>
       </span>
     </span>
   </button>
@@ -50,6 +50,28 @@ const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
 </span>
 
 <script>
+  // Detected once from <html lang>, set server-side per page (see
+  // src/i18n.ts) — cheaper than threading a lang prop through every call
+  // site for four strings that never appear in the initial HTML anyway.
+  const isZh = document.documentElement.lang.startsWith('zh');
+  const copy = isZh
+    ? {
+        copied: '已复制',
+        status: (addr: string) => `✓ 已复制 ${addr} — 粘贴到邮件中即可使用`,
+        announceCopied: (addr: string) => `${addr} 已复制到剪贴板`,
+        announceBlocked: (addr: string) =>
+          `当前浏览器不支持自动复制,地址是 ${addr}`,
+        ariaLabel: (addr: string) => `复制邮箱地址 ${addr}`,
+      }
+    : {
+        copied: 'Copied',
+        status: (addr: string) => `✓ ${addr} copied — paste it into your email`,
+        announceCopied: (addr: string) => `${addr} copied to clipboard`,
+        announceBlocked: (addr: string) =>
+          `Copying is blocked in this browser. The address is ${addr}`,
+        ariaLabel: (addr: string) => `Copy email address ${addr}`,
+      };
+
   const decode = (value: string): string | null => {
     try {
       return atob(value);
@@ -127,11 +149,13 @@ const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
 
       const idle = btn.querySelector<HTMLElement>('.js-email-idle')!;
       const done = btn.querySelector<HTMLElement>('.js-email-done')!;
+      const doneText = btn.querySelector<HTMLElement>('.js-email-done-text')!;
+      doneText.textContent = copy.copied;
 
       // Buttons with no explicit label display the address itself.
       if (!btn.dataset.label) idle.textContent = address;
 
-      btn.setAttribute('aria-label', `Copy email address ${address}`);
+      btn.setAttribute('aria-label', copy.ariaLabel(address));
       btn.hidden = false;
 
       // The plain-text fallback exists only for the no-JS case.
@@ -144,13 +168,13 @@ const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
 
         if (!ok) {
           showManualAddress(btn, address);
-          announce(`Copying is blocked in this browser. The address is ${address}`);
+          announce(copy.announceBlocked(address));
           return;
         }
 
         idle.classList.add('invisible');
         done.classList.remove('invisible');
-        announce(`${address} copied to clipboard`);
+        announce(copy.announceCopied(address));
 
         // The button label reverts after a moment so it reads as clickable
         // again, but a first-time visitor needs to know *what* was copied and
@@ -166,7 +190,7 @@ const variantClass = variant === 'inline' ? 'prose-link' : `btn btn-${variant}`;
               'js-email-status text-sm font-medium text-accent-strong';
             wrap.append(status);
           }
-          status.textContent = `✓ ${address} copied — paste it into your email`;
+          status.textContent = copy.status(address);
         }
 
         window.clearTimeout(timer);

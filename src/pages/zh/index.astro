@@ -1,0 +1,543 @@
+---
+import EmailLink from '../../components/EmailLink.astro';
+import FlowDiagram from '../../components/FlowDiagram.astro';
+import Icon, { type IconName } from '../../components/Icon.astro';
+import Section from '../../components/Section.astro';
+import TechRow from '../../components/TechRow.astro';
+import DashboardArt from '../../components/art/DashboardArt.astro';
+import HeroArt from '../../components/art/HeroArt.astro';
+import Base from '../../layouts/Base.astro';
+import { emailEncoded, emailPlain, site } from '../../site';
+
+/**
+ * Chinese-language home page for Chinese-Australian and Chinese-NZ club,
+ * venue and association owners — the primary audience for the business.
+ *
+ * This is written copy, not a translation of index.astro run through a
+ * tool: the structure mirrors the English page (same sections, same
+ * claims, same commitments) but the phrasing is built around what reads as
+ * credible to this audience — direct one-to-one contact in Chinese, a
+ * fixed quote in writing, and no exaggerated claims. See
+ * jackteng-site-positioning in project memory for the constraints that
+ * apply to both language versions: no fabricated track record, no
+ * invented metrics or testimonials.
+ */
+const description =
+  'Jack是常驻悉尼的软件开发者,用中文为澳新地区的机构,比如俱乐部、会所、社团,搭建预订、会员与运营系统,把分散的表格和聊天记录整合进一个数据库。';
+
+const commitments = [
+  '一个系统,一个真实数据源',
+  '全程与我本人直接沟通,中文无障碍',
+  '开工前先给固定报价',
+  '您的数据,随时可导出',
+];
+
+const problems = [
+  {
+    title: '咨询散落在微信、邮箱和电话里',
+    body: '有的客人问题被回复了两次,有的从没人回复,谁也说不清楚到底处理了没有。',
+  },
+  {
+    title: '报名全靠Excel表格和纸质登记本',
+    body: '全靠一个人盯着,一请假流程就停摆,表格还常被悄悄改出好几个版本。',
+  },
+  {
+    title: '确认信息全靠手打',
+    body: '每一笔预订,都要有人把姓名、日期和细节重新打进邮件或微信里,白白浪费时间。',
+  },
+  {
+    title: '同一份信息存在好几个地方',
+    body: 'Excel表格、纸质记录、聊天记录,还有某个人的记忆,谁也说不清哪一份才是准的。',
+  },
+];
+
+const services: { icon: IconName; name: string; summary: string; includes: string[] }[] = [
+  {
+    icon: 'browser',
+    name: '真正带来客户的网站',
+    summary:
+      '速度快、手机端体验好,让第一次访问的客人几秒钟内就明白您是做什么的、怎么联系您。',
+    includes: [
+      '页面结构和文案与您共同确认,不是我单方面猜测',
+      '响应式设计,手机流量下依然流畅',
+      '清晰的咨询入口,信息第一时间送到工作人员手上',
+      '内置数据统计,让您知道客人从哪里来',
+      '交付后您可以自己修改内容,不必事事找我',
+    ],
+  },
+  {
+    icon: 'automation',
+    name: '预订与咨询自动化',
+    summary: '前台最繁琐重复的部分,交给系统处理,不再占用人手。',
+    includes: [
+      '活动、订位或会员报名流程',
+      '自动发送确认、提醒和收据',
+      '咨询或活动后的自动跟进',
+      '候补名单和名额自动处理,无需人工干预',
+      '工作人员实时收到通知,不必反复刷邮箱',
+    ],
+  },
+  {
+    icon: 'database',
+    name: '一套系统,一个真正的数据库',
+    summary:
+      '取代五六个互不相通的工具。预订、会员、活动和付款,全部存在同一个数据库里,而不是散落在Excel、纸质记录和聊天记录中。',
+    includes: [
+      '预订、会员、活动、付款,统一在一个地方管理',
+      '真正的数据库,不是会分裂出多个版本的Excel表格',
+      '您现有的Excel数据会被导入并核对,不会被丢弃',
+      '数据看板直接读取同一数据源,数字永远对得上',
+      '数据随时可导出,不被任何一家公司锁定',
+    ],
+  },
+];
+
+const process: { icon: IconName; step: string; title: string; body: string }[] = [
+  {
+    icon: 'conversation',
+    step: '第一步',
+    title: '沟通',
+    body: '一次简短通话,了解您现在是怎么运作的、时间都花在哪里。不推销。',
+  },
+  {
+    icon: 'document',
+    step: '第二步',
+    title: '书面方案',
+    body: '开工前,范围、交付内容、时间表和固定价格,全部落实成书面文件。',
+  },
+  {
+    icon: 'build',
+    step: '第三步',
+    title: '边做边看',
+    body: '系统搭建过程中,您能持续看到真实进展,而不是最后才交出一个“惊喜”。',
+  },
+  {
+    icon: 'launch',
+    step: '第四步',
+    title: '上线交接',
+    body: '部署完成并附带文档,系统归您所有,后续如有需要也可继续支持。',
+  },
+];
+
+const platformPoints = [
+  {
+    title: '一份记录,而不是四份互相矛盾的副本',
+    body: '预订、名额、付款和咨询,全部在同一个界面里。所有操作读写的都是同一个数据库,不用重复录入,也不用争论哪份文件才是最新的。',
+  },
+  {
+    title: '数据存在数据库里,而不是散落的文件里',
+    body: '会员、预订和付款之间有真实的关联关系,传输全程加密,不是躺在某个人电脑里的文档。',
+  },
+  {
+    title: '高峰时段依然准确',
+    body: '即使多人同时操作同一份信息,数字依然保持正确,而且足够直观,任何值班人员在忙碌时都能正确使用。',
+  },
+  {
+    title: '系统归您所有',
+    body: '采用通用技术,不被单一开发者锁定,您随时可以要求完整导出。',
+  },
+];
+
+const approachLede =
+  '大多数运营问题不是缺软件,而是信息分散,只能靠人力当”胶水”,把同一笔预订反复抄进Excel、登记本和邮件里。一个系统、一个数据库,就能省掉这层人力胶水。';
+
+const faqs = [
+  {
+    q: '报价是怎么算的?',
+    a: '先免费通话30分钟了解需求,再给出书面方案和固定报价,不按小时计费。开工前收定金,完工后结清尾款。',
+  },
+  {
+    q: '需要多长时间?',
+    a: '一个小型网站,一到两周;预订与咨询自动化系统,两到四周。更大的系统会拆分成几个阶段,让您尽早看到实际效果。',
+  },
+  {
+    q: '代码和域名归谁所有?',
+    a: '都归您所有,尾款结清后全部移交。域名请务必用您自己的账户注册,而非开发者账户,系统才不会被任何一方”绑架”。',
+  },
+  {
+    q: '运行成本大概多少?',
+    a: '通常每月只需几澳元,加上域名费用。如果用到短信或邮件通知,会有少量按条计费的成本。开工前会给您具体数字。',
+  },
+  {
+    q: '我的Excel数据会丢失吗?',
+    a: '不会。把现有数据导入并核对,是项目本身的一部分,原始文件您也会一直保留。',
+  },
+  {
+    q: '我的数据存在哪里?',
+    a: '存在统一管理的数据库里,不是散落在某个人的电脑上。所有传输都经过加密。托管、访问权限和备份方式都会写进方案里,您随时可以要求导出全部数据。',
+  },
+  {
+    q: '是不是一定要用到AI?',
+    a: '很多时候不需要,而且我会直接告诉您。定时提醒不需要用到语言模型。真正需要AI的场景,是要处理非结构化的文字内容时。',
+  },
+  {
+    q: '可以全程用中文沟通吗?',
+    a: '可以。从第一次通话到项目交付,都可以用中文直接沟通,微信和邮箱都能找到我。',
+  },
+];
+---
+
+<Base
+  title="软件、系统平台与流程自动化"
+  description={description}
+  lang="zh"
+  altPath="/"
+>
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden pt-10 pb-14 sm:pt-20 sm:pb-24">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -top-40 -right-40 -z-10 h-[38rem] w-[38rem] rounded-full opacity-60 blur-3xl"
+      style="background: radial-gradient(circle, var(--accent-wash) 0%, transparent 68%);"
+    >
+    </div>
+
+    <div class="shell">
+      <div class="grid items-center gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+        <div>
+          <p class="eyebrow">
+            预订、会员与运营,整合成一套系统
+          </p>
+
+          <h1
+            class="mt-6 text-[2.75rem] leading-[1.1] font-bold sm:text-6xl lg:text-[4.25rem]"
+          >
+            一套系统,管好您的整个运营。
+            <span class="block text-accent-strong">
+              而不是五六个软件加一张表格。
+            </span>
+          </h1>
+
+          <p class="mt-8 max-w-xl text-lg leading-relaxed text-text-muted">
+            我是Jack,常驻悉尼的软件开发者,专门帮机构,比如俱乐部、会所、社团,把分散的报名表、聊天记录和Excel表格整合成一个系统、一个数据库。全程中文沟通,预订、会员、付款都记在同一个地方,不会因为换人换班而出错。
+          </p>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a href="#contact" class="btn btn-primary">
+              预约30分钟通话
+            </a>
+            <a href="#services" class="btn btn-secondary">查看我能做什么</a>
+          </div>
+        </div>
+
+        <div class="lg:pl-2">
+          <HeroArt />
+        </div>
+      </div>
+
+      <ul class="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-border pt-8 sm:mt-16">
+        {
+          commitments.map((c) => (
+            <li class="flex items-center gap-2 text-sm text-text-muted">
+              <span aria-hidden="true" class="text-accent">
+                <Icon name="check" class="size-4" />
+              </span>
+              {c}
+            </li>
+          ))
+        }
+      </ul>
+
+      <TechRow lang="zh" />
+    </div>
+  </section>
+
+  <!-- ── Problems ──────────────────────────────────────────────────── -->
+  <Section
+    id="problems"
+    eyebrow="我能解决的问题"
+    title="如果这些情况您也遇到过,其实都能解决。"
+    lede="不需要请更多人手,只需要把重复性的工作交给不会遗忘、不会出错的系统。"
+    variant="tinted"
+  >
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        problems.map((p) => (
+          <li class="card p-6">
+            <h3 class="font-display text-base font-bold">{p.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-muted">{p.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- ── Services ──────────────────────────────────────────────────── -->
+  <Section
+    id="services"
+    eyebrow="我能为您做什么"
+    title="三种起步方式。"
+    lede="大多数项目都是从这三项服务里的一项开始,再逐步扩展。每个项目开工前,都会有书面报价和固定价格。"
+  >
+    <div class="grid gap-6 lg:grid-cols-3">
+      {
+        services.map((s) => (
+          <article class="card flex flex-col p-7">
+            <span
+              class="inline-flex size-12 items-center justify-center rounded-xl bg-accent-wash text-accent-strong"
+            >
+              <Icon name={s.icon} class="size-6" />
+            </span>
+            <h3 class="mt-6 font-display text-xl font-bold">{s.name}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-muted">
+              {s.summary}
+            </p>
+            <ul class="mt-6 space-y-2.5 border-t border-border pt-6">
+              {s.includes.map((i) => (
+                <li class="flex gap-2.5 text-sm leading-relaxed">
+                  <span aria-hidden="true" class="mt-1 shrink-0 text-accent">
+                    <Icon name="check" class="size-3.5" />
+                  </span>
+                  <span class="text-text-muted">{i}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ── Approach ──────────────────────────────────────────────────── -->
+  <Section
+    id="approach"
+    eyebrow="实施方法"
+    title="一个互通的系统,而不是五个互不相通的工具。"
+    lede={approachLede}
+    variant="raised"
+    size="roomy"
+  >
+    <FlowDiagram lang="zh" />
+
+    <div class="mt-20 border-t border-border pt-14">
+      <h3 class="font-display text-2xl font-bold">项目是怎么推进的</h3>
+      <p class="mt-4 max-w-2xl leading-relaxed text-text-muted">
+        不做无边界的按小时收费,也不做含糊的工作说明。开工前,您就知道价格和交付内容。
+      </p>
+
+      <ol class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          process.map((p) => (
+            <li class="card p-6">
+              <span
+                class="inline-flex size-10 items-center justify-center rounded-lg bg-accent-wash text-accent-strong"
+              >
+                <Icon name={p.icon} class="size-5" />
+              </span>
+              <p class="mt-5 text-xs font-semibold tracking-wide text-accent-strong uppercase">
+                {p.step}
+              </p>
+              <h4 class="mt-1.5 font-display text-base font-bold">{p.title}</h4>
+              <p class="mt-2.5 text-sm leading-relaxed text-text-muted">
+                {p.body}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </Section>
+
+  <!-- ── Platform ──────────────────────────────────────────────────── -->
+  <Section
+    id="platform"
+    eyebrow="最终成果"
+    title="是每天都会打开的系统,不是只在演示时好看的样品。"
+    lede="运营系统的好坏,是在忙碌的夜晚被检验的,不是在演示的时候。所有数据都来自同一个数据库,您看到的就是记录本身,不是谁抄下来的副本。"
+  >
+    <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+      <div class="order-2 lg:order-1">
+        <div class="rounded-2xl border border-border bg-surface-sunken p-4 shadow-card sm:p-6">
+          <DashboardArt />
+        </div>
+        <p class="mt-4 text-xs text-text-muted">
+          仅为示意界面,并非真实客户系统。
+        </p>
+        <a href="/zh/demo" class="btn btn-secondary mt-6">
+          体验在线演示
+        </a>
+      </div>
+
+      <dl class="order-1 space-y-8 lg:order-2">
+        {
+          platformPoints.map((p) => (
+            <div>
+              <dt class="flex items-center gap-3 font-display text-base font-bold">
+                <span aria-hidden="true" class="text-accent">
+                  <Icon name="check" class="size-4.5" />
+                </span>
+                {p.title}
+              </dt>
+              <dd class="mt-2 pl-8 text-sm leading-relaxed text-text-muted">
+                {p.body}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </Section>
+
+  <!-- ── About ─────────────────────────────────────────────────────── -->
+  <Section id="about" eyebrow="关于我" title="您将直接与谁合作。" variant="tinted">
+    <div class="grid gap-10 lg:grid-cols-5">
+      <div class="lg:col-span-3">
+        <div class="space-y-5 text-base leading-relaxed text-text-muted">
+          <p>
+            我是Jack,常驻悉尼的软件开发者,搭建企业每天都要用的运营系统,而不只是好看的网站。这类系统一旦出错,当晚就会影响运营。
+          </p>
+          <p>
+            我做得最多的是”整合”:把Excel表格、纸质登记本、聊天记录和几个互不相通的软件,换成一个系统、一个数据库,涵盖报名、预订、排期、会员记录和管理看板。系统要经得起多人同时操作,所以每个项目都从先搞懂流程开始,再动手写代码。
+          </p>
+          <p>
+            项目全程由我本人直接跟进,不经过客户经理或中介,全程可用中文沟通。同时接手的项目数量控制得很少,确保每个项目都有足够的精力,方案设计以解决问题为准。
+          </p>
+        </div>
+      </div>
+
+      <aside class="lg:col-span-2">
+        <div class="card p-6">
+          <h3 class="font-display text-base font-bold">基本信息</h3>
+          <dl class="mt-5 space-y-4 text-sm">
+            <div>
+              <dt class="text-text-muted">常驻</dt>
+              <dd class="mt-0.5 font-medium">澳大利亚,悉尼</dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">服务地区</dt>
+              <dd class="mt-0.5 font-medium">澳大利亚与新西兰</dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">沟通语言</dt>
+              <dd class="mt-0.5 font-medium">中文、英文均可</dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">专注领域</dt>
+              <dd class="mt-0.5 font-medium">
+                运营类网站平台、预订系统与流程自动化
+              </dd>
+            </div>
+            <div>
+              <dt class="text-text-muted">目前状态</dt>
+              <dd class="mt-0.5 font-medium">
+                同一时段仅接有限数量的项目
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </Section>
+
+  <!-- ── FAQ ───────────────────────────────────────────────────────── -->
+  <Section
+    id="faq"
+    eyebrow="常见问题"
+    title="大家在写邮件之前最常问的问题。"
+  >
+    <div class="max-w-3xl divide-y divide-border">
+      {
+        faqs.map((f) => (
+          <details class="group">
+            <summary
+              class="flex cursor-pointer items-start justify-between gap-6 py-5 font-display text-base font-semibold"
+            >
+              {f.q}
+              <span
+                aria-hidden="true"
+                class="mt-0.5 shrink-0 text-accent transition-transform group-open:rotate-45"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  class="size-5"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
+            </summary>
+            <p class="-mt-1 max-w-2xl pb-5 text-sm leading-relaxed text-text-muted">
+              {f.a}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ── Contact ───────────────────────────────────────────────────── -->
+  <section id="contact" class="py-14 sm:py-20 lg:py-24">
+    <div class="shell">
+      <div class="card p-8 shadow-card sm:p-12">
+        <div class="grid gap-12 lg:grid-cols-2">
+          <div>
+            <p class="eyebrow">联系方式</p>
+            <h2 class="mt-3 text-3xl font-bold sm:text-4xl">
+              告诉我,哪里让您觉得不顺手。
+            </h2>
+            <p class="mt-5 leading-relaxed text-text-muted">
+              微信和邮箱都是找到我最快的方式。每一条消息我都会亲自阅读,真实咨询通常一个工作日内回复。
+            </p>
+
+            <div class="mt-8 flex flex-wrap items-center gap-3">
+              <EmailLink label="复制邮箱地址" variant="primary" />
+            </div>
+
+            <p class="mt-5 text-sm text-text-muted">
+              也可以直接写邮件到
+              <span
+                class="js-email-text font-medium text-text"
+                data-email={emailEncoded}>{emailPlain}</span
+              >
+            </p>
+
+            {
+              site.wechatId && (
+                <p class="mt-2 text-sm text-text-muted">
+                  微信号:
+                  <span class="select-all font-medium text-text">
+                    {' '}{site.wechatId}
+                  </span>
+                </p>
+              )
+            }
+          </div>
+
+          <div class="rounded-lg border border-border bg-surface-sunken p-6">
+            <h3 class="font-display text-base font-bold">
+              提供这些信息,我第一次回复就能给您有用的答案
+            </h3>
+            <ol class="mt-5 space-y-3 text-sm text-text-muted">
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">1</span>
+                您的机构名称,以及主要业务
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">2</span>
+                目前遇到的具体问题
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">3</span>
+                大致希望完成的时间
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">4</span>
+                预算范围(如果已有想法)
+              </li>
+              <li class="flex gap-3">
+                <span class="font-display font-bold text-accent-strong">5</span>
+                现有网站(如果有的话)
+              </li>
+            </ol>
+            <p class="mt-6 text-xs leading-relaxed text-text-muted">
+              不需要写得很精确,几句话就足够我判断能不能帮上忙。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

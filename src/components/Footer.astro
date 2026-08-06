@@ -1,7 +1,15 @@
 ---
+import { ui, type Lang } from '../i18n';
 import { site } from '../site';
 import EmailLink from './EmailLink.astro';
 import Logo from './Logo.astro';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang];
 
 const year = new Date().getFullYear();
 const socials = [
@@ -15,12 +23,23 @@ const socials = [
     <div class="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
       <div>
         <Logo withDescriptor />
-        <p class="mt-4 text-sm text-text-muted">{site.location}</p>
+        <p class="mt-4 text-sm text-text-muted">{t.location}</p>
       </div>
 
       <div class="flex flex-col gap-3 text-sm">
-        <span class="font-display font-semibold">Get in touch</span>
+        <span class="font-display font-semibold">{t.getInTouch}</span>
         <EmailLink variant="inline" />
+        {
+          lang === 'zh' && site.wechatId && (
+            <p class="text-text-muted">
+              {t.wechatLabel}
+              <span class="select-all font-medium text-text">
+                {' '}
+                {site.wechatId}
+              </span>
+            </p>
+          )
+        }
         {
           socials.length > 0 && (
             <ul class="mt-1 flex gap-4">
@@ -38,7 +57,7 @@ const socials = [
     </div>
 
     <p class="mt-12 text-xs text-text-muted">
-      &copy; {year} {site.name}. Built in Sydney.
+      {t.builtIn(year)}
     </p>
   </div>
 </footer>

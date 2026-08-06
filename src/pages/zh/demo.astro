@@ -1,0 +1,156 @@
+---
+import Demo from '../../components/Demo.astro';
+import EmailLink from '../../components/EmailLink.astro';
+import Icon, { type IconName } from '../../components/Icon.astro';
+import Base from '../../layouts/Base.astro';
+
+/**
+ * Chinese-language version of the standalone demonstration page. See
+ * demo.astro for why this page exists (a working link is stronger than a
+ * static site for outreach) and zh/index.astro for the localisation
+ * approach — hand-written for the audience, not translated line by line.
+ */
+const description =
+  '一场针对场馆活动报名流程的在线演示:会员看到的界面、自动触发的确认与提醒,以及工作人员看到的记录。全部为虚构数据,不会保存任何信息。';
+
+const replaces: { icon: IconName; before: string; after: string }[] = [
+  {
+    icon: 'browser',
+    before: '一张需要人工处理的表单,或者一通电话',
+    after: '报名自动记录、即时自动确认',
+  },
+  {
+    icon: 'automation',
+    before: '确认信息和提醒全靠手打',
+    after: '按计划自动发送,每次都不遗漏,不占用人手',
+  },
+  {
+    icon: 'dashboard',
+    before: '需要有人随时维护的Excel表格',
+    after: '名额、来宾和付款的实时统一视图',
+  },
+];
+
+const notes = [
+  '以下内容全部在您的浏览器中运行,不会上传或保存任何信息。',
+  '场馆、活动和工作人员表格中的姓名均为虚构。',
+  '真实系统会根据您机构现有的运作方式定制,这里演示的是背后的运作逻辑,不是您会直接拿到的成品。',
+];
+---
+
+<Base title="在线演示" description={description} lang="zh" altPath="/demo">
+  <!-- ── Intro ─────────────────────────────────────────────────────── -->
+  <section class="pt-14 pb-12 sm:pt-20">
+    <div class="shell">
+      <p class="eyebrow">在线演示</p>
+
+      <h1
+        class="mt-6 max-w-3xl text-[2.5rem] leading-[1.1] font-bold sm:text-5xl lg:text-[3.5rem]"
+      >
+        从报名到完成,全流程演示。
+      </h1>
+
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-text-muted">
+        在下方为一个虚构场馆活动完成报名,看看真实系统接下来会自动做什么:会员收到的确认信息、活动前的提醒、活动后的跟进,以及前台工作人员看到的记录。
+      </p>
+
+      <ul class="mt-8 max-w-2xl space-y-2.5">
+        {
+          notes.map((n) => (
+            <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+              <span aria-hidden="true" class="mt-0.5 shrink-0 text-accent">
+                <Icon name="check" class="size-4" />
+              </span>
+              {n}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── The demo itself ───────────────────────────────────────────── -->
+  <section aria-labelledby="try-heading" class="pb-20">
+    <div class="shell">
+      <h2 id="try-heading" class="sr-only">体验在线演示</h2>
+      <Demo lang="zh" />
+    </div>
+  </section>
+
+  <!-- ── What it replaces ──────────────────────────────────────────── -->
+  <section
+    aria-labelledby="replaces-heading"
+    class="band-raised py-20 sm:py-24"
+  >
+    <div class="shell">
+      <div class="max-w-2xl">
+        <p class="eyebrow">它能替代什么</p>
+        <h2
+          id="replaces-heading"
+          class="mt-3 text-3xl leading-[1.1] font-bold sm:text-4xl lg:text-[2.875rem]"
+        >
+          同一份工作,人工版对比系统版。
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-text-muted">
+          这些都不是什么高难度的工作,只是目前每一场活动都要有人手动重复去做。
+        </p>
+      </div>
+
+      <div class="mt-14 grid gap-6 lg:grid-cols-3">
+        {
+          replaces.map((r) => (
+            <div class="card p-7">
+              <span class="inline-flex size-11 items-center justify-center rounded-lg bg-accent-wash text-accent-strong">
+                <Icon name={r.icon} class="size-5" />
+              </span>
+              <p class="mt-6 text-xs font-semibold tracking-wide text-text-muted uppercase">
+                目前
+              </p>
+              <p class="mt-1.5 text-sm leading-relaxed text-text-muted">
+                {r.before}
+              </p>
+              <p class="mt-5 text-xs font-semibold tracking-wide text-accent-strong uppercase">
+                使用系统之后
+              </p>
+              <p class="mt-1.5 text-sm leading-relaxed">{r.after}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Close ─────────────────────────────────────────────────────── -->
+  <section aria-labelledby="next-heading" class="py-20 sm:py-24">
+    <div class="shell">
+      <div class="card p-8 shadow-card sm:p-12">
+        <div class="max-w-2xl">
+          <p class="eyebrow">接下来会怎样</p>
+          <h2
+            id="next-heading"
+            class="mt-3 text-3xl font-bold sm:text-4xl"
+          >
+            真正的系统,会为您量身定制。
+          </h2>
+          <p class="mt-5 leading-relaxed text-text-muted">
+            这个演示只处理了一种活动、一种预订方式。真实系统会覆盖您的会员等级、名额规则、付款流程,以及委员会每月需要看到的报表。第一步永远是先聊聊您现在的运作方式,不是推销。
+          </p>
+
+          <div class="mt-9 flex flex-wrap items-center gap-4">
+            <a href="/zh/#contact" class="btn btn-primary">
+              预约30分钟通话
+            </a>
+            <a href="/zh/#services" class="btn btn-secondary">查看我能做什么</a>
+          </div>
+
+          <p class="mt-8 text-sm text-text-muted">
+            或复制我的邮箱地址,随时写信联系:
+          </p>
+          <div class="mt-3">
+            <EmailLink label="复制邮箱地址" variant="secondary" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,17 +1,21 @@
 ---
 import Icon, { type IconName } from './Icon.astro';
+import type { Lang } from '../i18n';
 
 /**
  * Built from HTML rather than one wide SVG on purpose: a 1000px-wide SVG
  * carrying labels shrinks its text to nothing on a phone. This reflows to a
  * single column and the type stays at its proper size.
  */
-const stages: {
-  icon: IconName;
-  step: string;
-  title: string;
-  items: string[];
-}[] = [
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+
+type Stage = { icon: IconName; step: string; title: string; items: string[] };
+
+const stagesEn: Stage[] = [
   {
     icon: 'conversation',
     step: '01',
@@ -46,6 +50,44 @@ const stages: {
     ],
   },
 ];
+
+const stagesZh: Stage[] = [
+  {
+    icon: 'conversation',
+    step: '01',
+    title: '咨询进来',
+    items: [
+      '网站咨询表单',
+      '电话与短信',
+      '邮件与微信消息',
+      '活动或会员报名',
+    ],
+  },
+  {
+    icon: 'automation',
+    step: '02',
+    title: '系统自动处理',
+    items: [
+      '到达即自动分类、转发',
+      '第一时间发送确认',
+      '活动前自动提醒',
+      '活动后自动跟进',
+    ],
+  },
+  {
+    icon: 'dashboard',
+    step: '03',
+    title: '您只看重要的信息',
+    items: [
+      '所有预订一目了然',
+      '名额与付款实时更新',
+      '邮箱里不再有积压的咨询',
+      '看到的数字可以直接用来做决定',
+    ],
+  },
+];
+
+const stages = lang === 'zh' ? stagesZh : stagesEn;
 ---
 
 <div class="grid gap-5 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-stretch lg:gap-0">

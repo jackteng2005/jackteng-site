@@ -4,16 +4,25 @@ import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
 
 import Footer from '../components/Footer.astro';
+import LocaleSwitch from '../components/LocaleSwitch.astro';
 import Nav from '../components/Nav.astro';
 import Seo from '../components/Seo.astro';
+import { ui, type Lang } from '../i18n';
 
 interface Props {
   title: string;
   description: string;
   indexable?: boolean;
+  lang?: Lang;
+  /**
+   * Path of the equivalent page in the other language, e.g. '/zh/' for '/'.
+   * Omit on pages with no counterpart (404) — the switch link is hidden.
+   */
+  altPath?: string;
 }
 
-const { title, description, indexable } = Astro.props;
+const { title, description, indexable, lang = 'en', altPath } = Astro.props;
+const t = ui[lang];
 ---
 
 <!doctype html>
@@ -22,7 +31,7 @@ const { title, description, indexable } = Astro.props;
   a preference. The light tokens stay defined in global.css so a toggle can be
   added later by flipping this attribute.
 -->
-<html lang="en-AU" data-theme="dark">
+<html lang={t.htmlLang} data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,7 +39,13 @@ const { title, description, indexable } = Astro.props;
     <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
-    <Seo title={title} description={description} indexable={indexable} />
+    <Seo
+      title={title}
+      description={description}
+      indexable={indexable}
+      lang={lang}
+      altPath={altPath}
+    />
   </head>
 
   <body>
@@ -38,16 +53,17 @@ const { title, description, indexable } = Astro.props;
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:shadow-card"
     >
-      Skip to content
+      {t.skipToContent}
     </a>
 
-    <Nav />
+    <Nav lang={lang} />
+    {altPath && <LocaleSwitch lang={lang} altPath={altPath} />}
 
     <main id="main">
       <slot />
     </main>
 
-    <Footer />
+    <Footer lang={lang} />
 
     <script>
       // Scroll reveal. The `reveal` class is applied here rather than in the

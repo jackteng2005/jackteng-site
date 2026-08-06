@@ -1,0 +1,28 @@
+---
+import EmailLink from '../../components/EmailLink.astro';
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="页面未找到"
+  description="该页面不存在。"
+  indexable={false}
+  lang="zh"
+  altPath="/404"
+>
+  <section class="py-28 sm:py-36">
+    <div class="shell max-w-xl">
+      <p class="eyebrow">404</p>
+      <h1 class="mt-4 text-4xl font-bold sm:text-5xl">
+        该页面不存在。
+      </h1>
+      <p class="mt-6 leading-relaxed text-text-muted">
+        链接可能已失效,或者地址中有拼写错误。
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href="/zh/" class="btn btn-primary">返回首页</a>
+        <EmailLink label="复制邮箱地址" variant="secondary" />
+      </div>
+    </div>
+  </section>
+</Base>

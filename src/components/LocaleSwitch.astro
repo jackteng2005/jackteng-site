@@ -1,0 +1,43 @@
+---
+import { ui, type Lang } from '../i18n';
+
+/**
+ * EN <-> Chinese link, top-right of the viewport on every page.
+ *
+ * Replaces the earlier Google Translate widget: the /zh pages are now
+ * hand-written copy with their own routes, so this is a plain link to the
+ * equivalent page rather than a live-translation toggle. No JavaScript,
+ * no third-party script.
+ */
+interface Props {
+  lang?: Lang;
+  /** Path of the equivalent page in the other language. */
+  altPath: string;
+}
+
+const { lang = 'en', altPath } = Astro.props;
+const t = ui[lang];
+---
+
+<a
+  href={altPath}
+  translate="no"
+  class="notranslate fixed right-4 top-20 z-50 inline-flex items-center gap-1.5 rounded-full border border-control-border bg-surface px-3.5 py-2 text-sm font-medium text-text shadow-card transition-colors hover:border-text"
+  aria-label={t.switchAriaLabel}
+>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    class="h-4 w-4 shrink-0"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path
+      d="M4 5h7M7.5 3v2m0 0c0 4-2 7-5 9m8-9c-1 3-3 5.5-6 7.5M13 21l4-9 4 9m-6.5-3h5"
+    ></path>
+  </svg>
+  <span>{t.switchLabel}</span>
+</a>

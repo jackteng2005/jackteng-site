@@ -1,5 +1,6 @@
 ---
-import { nav } from '../site';
+import { ui, type Lang } from '../i18n';
+import { nav, navZh } from '../site';
 import Logo from './Logo.astro';
 
 /**
@@ -8,6 +9,14 @@ import Logo from './Logo.astro';
  * convenience, not the only route to the content. Keeps the header at
  * zero JavaScript.
  */
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang];
+const items = lang === 'zh' ? navZh : nav;
+const contactHref = lang === 'zh' ? '/zh/#contact' : '/#contact';
 ---
 
 <header
@@ -15,9 +24,9 @@ import Logo from './Logo.astro';
 >
   <div class="shell flex h-16 items-center justify-between gap-6">
     <a
-      href="/"
+      href={t.homeHref}
       class="inline-flex items-center rounded-sm py-2"
-      aria-label="Jack Teng — home"
+      aria-label={t.homeAriaLabel}
     >
       <Logo />
     </a>
@@ -25,7 +34,7 @@ import Logo from './Logo.astro';
     <nav aria-label="Sections" class="hidden md:block">
       <ul class="flex items-center gap-5 lg:gap-7">
         {
-          nav.map((item) => (
+          items.map((item) => (
             <li>
               <a
                 href={item.href}
@@ -39,8 +48,8 @@ import Logo from './Logo.astro';
       </ul>
     </nav>
 
-    <a href="/#contact" class="btn btn-primary shrink-0 !px-4 !py-2.5 text-sm">
-      Get in touch
+    <a href={contactHref} class="btn btn-primary shrink-0 !px-4 !py-2.5 text-sm">
+      {t.getInTouch}
     </a>
   </div>
 </header>

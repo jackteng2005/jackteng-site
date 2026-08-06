@@ -1,4 +1,6 @@
 ---
+import type { Lang } from '../i18n';
+
 /**
  * Interactive demonstration: event registration with automated follow-up.
  *
@@ -15,15 +17,100 @@
  * sees, what happens automatically, and what staff see. That is the
  * actual product being sold.
  */
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const isZh = lang === 'zh';
+
 const CAPACITY = 120;
 const SEEDED = 86;
 
-const seedRows = [
-  { name: 'A. Nguyen', guests: 1, status: 'Confirmed', when: 'Mon 09:14' },
-  { name: 'D. Okafor', guests: 0, status: 'Confirmed', when: 'Mon 11:02' },
-  { name: 'S. Bianchi', guests: 2, status: 'Awaiting payment', when: 'Tue 08:47' },
-  { name: 'L. Ferreira', guests: 0, status: 'Confirmed', when: 'Tue 19:23' },
-];
+const seedRows = isZh
+  ? [
+      { name: '陈 (A. Chen)', guests: 1, status: '已确认', when: '周一 09:14' },
+      { name: '刘 (L. Liu)', guests: 0, status: '已确认', when: '周一 11:02' },
+      { name: '黄 (H. Huang)', guests: 2, status: '待付款', when: '周二 08:47' },
+      { name: '王 (W. Wang)', guests: 0, status: '已确认', when: '周二 19:23' },
+    ]
+  : [
+      { name: 'A. Nguyen', guests: 1, status: 'Confirmed', when: 'Mon 09:14' },
+      { name: 'D. Okafor', guests: 0, status: 'Confirmed', when: 'Mon 11:02' },
+      { name: 'S. Bianchi', guests: 2, status: 'Awaiting payment', when: 'Tue 08:47' },
+      { name: 'L. Ferreira', guests: 0, status: 'Confirmed', when: 'Tue 19:23' },
+    ];
+
+const t = isZh
+  ? {
+      bannerStrong: '这是一个演示。',
+      banner: '虚构场馆,虚构数据。全部在您的浏览器中运行,不会上传或保存任何信息。',
+      step1: '1 — 会员看到的界面',
+      eventTitle: '周四晚场活动',
+      eventVenue: '河畔礼堂',
+      eventTime: '晚上 7:00',
+      remainingSuffix: (cap: number) => ` / 共 ${cap} 个名额`,
+      formName: '姓名',
+      formEmail: '邮箱',
+      formGuests: '同行人数',
+      guestOptions: ['仅我一人', '1位同行', '2位同行', '3位同行'],
+      submit: '立即报名此活动',
+      step2: '2 — 系统自动处理的内容',
+      idleBody:
+        '提交表单后,您会看到接下来自动触发的流程:会员收到的确认信息、活动前的提醒、活动后的跟进,以及工作人员看到的新增记录。',
+      idleList: [
+        '不需要更新Excel表格',
+        '不需要手动发送确认邮件',
+        '活动结束后不需要再追着未到场的人',
+      ],
+      step3: '3 — 工作人员看到的界面',
+      tableCaption: '周四晚场活动的报名记录',
+      thMember: '会员',
+      thGuests: '同行人数',
+      thStatus: '状态',
+      thReceived: '提交时间',
+      resetBtn: '重置演示',
+      errorName: '请输入姓名以继续。',
+      errorEmail: '请输入有效的邮箱地址以继续。',
+      resultHeading: (places: number) =>
+        `已预订 ${places} 个名额 — 以下是系统自动触发的全部流程`,
+      confirmedStatus: '已确认',
+    }
+  : {
+      bannerStrong: 'Demonstration.',
+      banner:
+        'Fictional venue, fictional data. Everything runs in your browser — nothing is sent or stored.',
+      step1: '1 — What the member sees',
+      eventTitle: 'Thursday Night Session',
+      eventVenue: 'Riverside Hall',
+      eventTime: '7:00pm',
+      remainingSuffix: (cap: number) => ` of ${cap} places remaining`,
+      formName: 'Full name',
+      formEmail: 'Email',
+      formGuests: 'Guests',
+      guestOptions: ['Just me', '1 guest', '2 guests', '3 guests'],
+      submit: 'Register for this event',
+      step2: '2 — What happens automatically',
+      idleBody:
+        "Submit the form to see the sequence that would fire: the member's confirmation, the reminder before the event, the follow-up afterwards, and the row that appears for staff.",
+      idleList: [
+        'No spreadsheet to update',
+        'No manual confirmation emails',
+        'No chasing no-shows after the event',
+      ],
+      step3: '3 — What staff see',
+      tableCaption: 'Registrations for Thursday Night Session',
+      thMember: 'Member',
+      thGuests: 'Guests',
+      thStatus: 'Status',
+      thReceived: 'Received',
+      resetBtn: 'Reset demo',
+      errorName: 'Enter a name to continue.',
+      errorEmail: 'Enter a valid email address to continue.',
+      resultHeading: (places: number) =>
+        `${places} place${places > 1 ? 's' : ''} booked — here is everything that fired`,
+      confirmedStatus: 'Confirmed',
+    };
 ---
 
 <div
@@ -31,31 +118,31 @@ const seedRows = [
   data-demo
   data-capacity={CAPACITY}
   data-seeded={SEEDED}
+  data-lang={lang}
 >
   <p
     class="border-b border-border bg-accent-wash px-5 py-3 text-sm text-text-muted"
   >
-    <strong class="font-semibold text-text">Demonstration.</strong> Fictional
-    venue, fictional data. Everything runs in your browser — nothing is sent
-    or stored.
+    <strong class="font-semibold text-text">{t.bannerStrong}</strong>
+    {' '}{t.banner}
   </p>
 
   <div class="grid gap-0 lg:grid-cols-2">
     <!-- ── Member-facing ─────────────────────────────────────────── -->
     <div class="border-border p-6 sm:p-8 lg:border-r">
-      <p class="eyebrow">1 — What the member sees</p>
+      <p class="eyebrow">{t.step1}</p>
 
       <div class="mt-5 rounded-lg border border-border bg-surface-sunken p-5">
         <h3 class="font-display text-lg font-bold">
-          Thursday Night Session
+          {t.eventTitle}
         </h3>
         <p class="mt-1 text-sm text-text-muted">
-          Riverside Hall &middot; <span data-demo-date>Thursday</span> &middot;
-          7:00pm
+          {t.eventVenue} &middot; <span data-demo-date>{isZh ? '周四' : 'Thursday'}</span> &middot;
+          {t.eventTime}
         </p>
         <p class="mt-3 text-sm">
           <span class="font-semibold" data-demo-remaining>{CAPACITY - SEEDED}</span>
-          <span class="text-text-muted"> of {CAPACITY} places remaining</span>
+          <span class="text-text-muted">{t.remainingSuffix(CAPACITY)}</span>
         </p>
       </div>
 
@@ -63,7 +150,7 @@ const seedRows = [
         <div>
           <label
             for="demo-name"
-            class="block text-sm font-medium">Full name</label
+            class="block text-sm font-medium">{t.formName}</label
           >
           <input
             id="demo-name"
@@ -76,7 +163,7 @@ const seedRows = [
         </div>
 
         <div>
-          <label for="demo-email" class="block text-sm font-medium">Email</label>
+          <label for="demo-email" class="block text-sm font-medium">{t.formEmail}</label>
           <input
             id="demo-email"
             name="email"
@@ -89,17 +176,17 @@ const seedRows = [
 
         <div>
           <label for="demo-guests" class="block text-sm font-medium"
-            >Guests</label
+            >{t.formGuests}</label
           >
           <select
             id="demo-guests"
             name="guests"
             class="field mt-1.5"
           >
-            <option value="0">Just me</option>
-            <option value="1">1 guest</option>
-            <option value="2">2 guests</option>
-            <option value="3">3 guests</option>
+            <option value="0">{t.guestOptions[0]}</option>
+            <option value="1">{t.guestOptions[1]}</option>
+            <option value="2">{t.guestOptions[2]}</option>
+            <option value="3">{t.guestOptions[3]}</option>
           </select>
         </div>
 
@@ -111,7 +198,7 @@ const seedRows = [
         </p>
 
         <button type="submit" class="btn btn-primary w-full">
-          Register for this event
+          {t.submit}
         </button>
       </form>
     </div>
@@ -119,30 +206,22 @@ const seedRows = [
     <!-- ── Automation + staff view ───────────────────────────────── -->
     <div class="bg-surface-sunken p-6 sm:p-8">
       <div data-demo-idle>
-        <p class="eyebrow">2 — What happens automatically</p>
+        <p class="eyebrow">{t.step2}</p>
         <p class="mt-5 text-sm leading-relaxed text-text-muted">
-          Submit the form to see the sequence that would fire: the member's
-          confirmation, the reminder before the event, the follow-up
-          afterwards, and the row that appears for staff.
+          {t.idleBody}
         </p>
         <ul class="mt-6 space-y-3 text-sm text-text-muted">
-          <li class="flex gap-3">
-            <span aria-hidden="true" class="text-accent">&#9679;</span>
-            No spreadsheet to update
-          </li>
-          <li class="flex gap-3">
-            <span aria-hidden="true" class="text-accent">&#9679;</span>
-            No manual confirmation emails
-          </li>
-          <li class="flex gap-3">
-            <span aria-hidden="true" class="text-accent">&#9679;</span>
-            No chasing no-shows after the event
-          </li>
+          {t.idleList.map((item) => (
+            <li class="flex gap-3">
+              <span aria-hidden="true" class="text-accent">&#9679;</span>
+              {item}
+            </li>
+          ))}
         </ul>
       </div>
 
       <div data-demo-result hidden aria-live="polite">
-        <p class="eyebrow">2 — What happens automatically</p>
+        <p class="eyebrow">{t.step2}</p>
         <h3
           class="mt-3 font-display text-lg font-bold"
           data-demo-result-heading
@@ -152,18 +231,18 @@ const seedRows = [
 
         <ol class="mt-6 space-y-4" data-demo-timeline></ol>
 
-        <p class="eyebrow mt-10">3 — What staff see</p>
+        <p class="eyebrow mt-10">{t.step3}</p>
         <div class="mt-4 overflow-x-auto rounded-lg border border-border bg-surface">
           <table class="w-full min-w-[26rem] text-left text-sm">
             <caption class="sr-only">
-              Registrations for Thursday Night Session
+              {t.tableCaption}
             </caption>
             <thead class="border-b border-border text-xs uppercase tracking-wide text-text-muted">
               <tr>
-                <th scope="col" class="px-4 py-2.5 font-semibold">Member</th>
-                <th scope="col" class="px-4 py-2.5 font-semibold">Guests</th>
-                <th scope="col" class="px-4 py-2.5 font-semibold">Status</th>
-                <th scope="col" class="px-4 py-2.5 font-semibold">Received</th>
+                <th scope="col" class="px-4 py-2.5 font-semibold">{t.thMember}</th>
+                <th scope="col" class="px-4 py-2.5 font-semibold">{t.thGuests}</th>
+                <th scope="col" class="px-4 py-2.5 font-semibold">{t.thStatus}</th>
+                <th scope="col" class="px-4 py-2.5 font-semibold">{t.thReceived}</th>
               </tr>
             </thead>
             <tbody data-demo-rows>
@@ -182,7 +261,7 @@ const seedRows = [
         </div>
 
         <button type="button" class="btn btn-secondary mt-6" data-demo-reset>
-          Reset demo
+          {t.resetBtn}
         </button>
       </div>
     </div>
@@ -193,6 +272,8 @@ const seedRows = [
   const root = document.querySelector<HTMLElement>('[data-demo]');
 
   if (root) {
+    const isZh = root.dataset.lang === 'zh';
+
     const form = root.querySelector<HTMLFormElement>('[data-demo-form]')!;
     const idle = root.querySelector<HTMLElement>('[data-demo-idle]')!;
     const result = root.querySelector<HTMLElement>('[data-demo-result]')!;
@@ -207,6 +288,64 @@ const seedRows = [
     const capacity = Number(root.dataset.capacity ?? 120);
     const seeded = Number(root.dataset.seeded ?? 0);
 
+    const copy = isZh
+      ? {
+          errorName: '请输入姓名以继续。',
+          errorEmail: '请输入有效的邮箱地址以继续。',
+          resultHeading: (places: number) =>
+            `已预订 ${places} 个名额 — 以下是系统自动触发的全部流程`,
+          confirmed: '已确认',
+          immediately: '立即',
+          toMember: '发送给会员的邮件',
+          toStaff: '发送给工作人员的通知',
+          confirmedTitle: '报名已确认',
+          loggedTitle: '新报名已记录',
+          reminderChannel: '发送给会员的短信 + 邮件',
+          reminderTitle: '活动前24小时提醒',
+          followUpChannel: '发送给会员的邮件',
+          followUpTitle: '跟进与再次预订',
+          confirmedBody: (
+            firstName: string,
+            date: string,
+            guests: number
+          ) =>
+            `${firstName}您好,您已成功报名「周四晚场活动」,时间为${date}晚上7:00${guests ? `,另有${guests}位同行` : ''}。名额将为您保留至18:45。`,
+          loggedBody: (name: string, places: number, taken: number, cap: number) =>
+            `${name} — 共${places}位。活动当前名额:${taken}/${cap}。`,
+          reminderBody:
+            '提醒:您明天晚上7:00的名额已确认。回复“取消”即可释放名额,系统会自动通知候补人员。',
+          followUpBody: (firstName: string) =>
+            `谢谢您的到场,${firstName}。下周活动已开放报名,一键即可预订同样的位置。`,
+        }
+      : {
+          errorName: 'Enter a name to continue.',
+          errorEmail: 'Enter a valid email address to continue.',
+          resultHeading: (places: number) =>
+            `${places} place${places > 1 ? 's' : ''} booked — here is everything that fired`,
+          confirmed: 'Confirmed',
+          immediately: 'Immediately',
+          toMember: 'Email to member',
+          toStaff: 'Notification to staff',
+          confirmedTitle: 'Registration confirmed',
+          loggedTitle: 'New registration logged',
+          reminderChannel: 'SMS + email to member',
+          reminderTitle: 'Reminder, 24 hours out',
+          followUpChannel: 'Email to member',
+          followUpTitle: 'Follow-up and rebooking',
+          confirmedBody: (
+            firstName: string,
+            date: string,
+            guests: number
+          ) =>
+            `Hi ${firstName}, you're registered for the Thursday Night Session on ${date} at 7:00pm${guests ? `, plus ${guests} guest${guests > 1 ? 's' : ''}` : ''}. Your place is held until 6:45pm.`,
+          loggedBody: (name: string, places: number, taken: number, cap: number) =>
+            `${name} — ${places} place${places > 1 ? 's' : ''}. Event now at ${taken} of ${cap}.`,
+          reminderBody:
+            'Reminder: your place is confirmed for tomorrow at 7:00pm. Reply CANCEL to release it — it goes to the waitlist automatically.',
+          followUpBody: (firstName: string) =>
+            `Thanks for coming, ${firstName}. Next week's event is open for registration — one tap to book the same spot.`,
+        };
+
     /** Next Thursday, so the demo never reads as stale. */
     const eventDate = (() => {
       const d = new Date();
@@ -214,17 +353,19 @@ const seedRows = [
       return d;
     })();
 
-    const fmtDate = new Intl.DateTimeFormat('en-AU', {
+    const locale = isZh ? 'zh-CN' : 'en-AU';
+
+    const fmtDate = new Intl.DateTimeFormat(locale, {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
     });
-    const fmtShort = new Intl.DateTimeFormat('en-AU', {
+    const fmtShort = new Intl.DateTimeFormat(locale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
     });
-    const fmtTime = new Intl.DateTimeFormat('en-AU', {
+    const fmtTime = new Intl.DateTimeFormat(locale, {
       weekday: 'short',
       hour: '2-digit',
       minute: '2-digit',
@@ -275,9 +416,7 @@ const seedRows = [
       // Validate here rather than relying on the browser, so the message
       // sits in a predictable place for screen readers.
       if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errorBox.textContent = !name
-          ? 'Enter a name to continue.'
-          : 'Enter a valid email address to continue.';
+        errorBox.textContent = !name ? copy.errorName : copy.errorEmail;
         errorBox.classList.remove('hidden');
         (!name
           ? form.querySelector<HTMLInputElement>('#demo-name')
@@ -292,41 +431,41 @@ const seedRows = [
       taken = Math.min(capacity, taken + places);
       remaining.textContent = String(capacity - taken);
 
-      const firstName = name.split(/\s+/)[0];
+      const firstName = isZh ? name : name.split(/\s+/)[0];
 
       timeline.replaceChildren();
 
       step(
-        'Immediately',
-        'Email to member',
-        'Registration confirmed',
-        `Hi ${firstName}, you're registered for the Thursday Night Session on ${fmtDate.format(eventDate)} at 7:00pm${guests ? `, plus ${guests} guest${guests > 1 ? 's' : ''}` : ''}. Your place is held until 6:45pm.`
+        copy.immediately,
+        copy.toMember,
+        copy.confirmedTitle,
+        copy.confirmedBody(firstName, fmtDate.format(eventDate), guests)
       );
 
       step(
-        'Immediately',
-        'Notification to staff',
-        'New registration logged',
-        `${name} — ${places} place${places > 1 ? 's' : ''}. Event now at ${taken} of ${capacity}.`
+        copy.immediately,
+        copy.toStaff,
+        copy.loggedTitle,
+        copy.loggedBody(name, places, taken, capacity)
       );
 
       step(
         fmtShort.format(dayBefore),
-        'SMS + email to member',
-        'Reminder, 24 hours out',
-        `Reminder: your place is confirmed for tomorrow at 7:00pm. Reply CANCEL to release it — it goes to the waitlist automatically.`
+        copy.reminderChannel,
+        copy.reminderTitle,
+        copy.reminderBody
       );
 
       step(
         fmtShort.format(dayAfter),
-        'Email to member',
-        'Follow-up and rebooking',
-        `Thanks for coming, ${firstName}. Next week's event is open for registration — one tap to book the same spot.`
+        copy.followUpChannel,
+        copy.followUpTitle,
+        copy.followUpBody(firstName)
       );
 
       const tr = document.createElement('tr');
       tr.className = 'border-b border-border last:border-0 bg-accent-wash';
-      const cells = [name, String(guests), 'Confirmed', fmtTime.format(new Date())];
+      const cells = [name, String(guests), copy.confirmed, fmtTime.format(new Date())];
       cells.forEach((value, i) => {
         const td = document.createElement('td');
         td.className = i >= 2 ? 'px-4 py-2.5 text-text-muted' : 'px-4 py-2.5';
@@ -336,7 +475,7 @@ const seedRows = [
       });
       rows.append(tr);
 
-      heading.textContent = `${places} place${places > 1 ? 's' : ''} booked — here is everything that fired`;
+      heading.textContent = copy.resultHeading(places);
 
       idle.hidden = true;
       result.hidden = false;

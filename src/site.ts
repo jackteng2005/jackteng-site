@@ -20,6 +20,14 @@ export const site = {
   linkedin: '',
   github: '',
 
+  /**
+   * WeChat ID for the /zh contact section. Left blank on purpose — this is
+   * a real identifier, not copy, so it is not invented here. Fill it in
+   * before the /zh pages go live; until then the contact section omits the
+   * WeChat row rather than showing a placeholder to visitors.
+   */
+  wechatId: '',
+
   /** Areas served, used for the ProfessionalService structured data. */
   areasServed: ['Sydney', 'New South Wales', 'Australia', 'New Zealand'],
 } as const;
@@ -44,6 +52,15 @@ export const nav = [
   { href: '/#approach', label: 'Approach' },
   { href: '/demo', label: 'Demo' },
   { href: '/#about', label: 'About' },
+] as const;
+
+/** Chinese equivalent, pointing at the /zh routes rather than the English ones. */
+export const navZh = [
+  { href: '/zh/#problems', label: '常见痛点' },
+  { href: '/zh/#services', label: '服务内容' },
+  { href: '/zh/#approach', label: '实施方法' },
+  { href: '/zh/demo', label: '在线演示' },
+  { href: '/zh/#about', label: '关于我' },
 ] as const;
 
 /**

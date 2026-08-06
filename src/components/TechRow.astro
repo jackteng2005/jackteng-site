@@ -1,4 +1,6 @@
 ---
+import type { Lang } from '../i18n';
+
 /**
  * Technology chips.
  *
@@ -14,7 +16,13 @@
  *
  * Add the host (Netlify or Vercel) to "Data & platform" once deployed.
  */
-const groups: { label: string; items: string[] }[] = [
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+
+const groupsEn: { label: string; items: string[] }[] = [
   {
     label: 'Build',
     items: ['TypeScript', 'Node.js', 'Astro', 'Tailwind CSS', 'Git'],
@@ -28,13 +36,31 @@ const groups: { label: string; items: string[] }[] = [
     items: ['Claude', 'OpenAI API', 'Cursor', 'Codex', 'Lovable'],
   },
 ].filter((g) => g.items.length > 0);
+
+const groupsZh: { label: string; items: string[] }[] = [
+  {
+    label: '开发',
+    items: ['TypeScript', 'Node.js', 'Astro', 'Tailwind CSS', 'Git'],
+  },
+  {
+    label: '数据与平台',
+    items: ['Firebase', 'Google Workspace'],
+  },
+  {
+    label: 'AI',
+    items: ['Claude', 'OpenAI API', 'Cursor', 'Codex', 'Lovable'],
+  },
+].filter((g) => g.items.length > 0);
+
+const groups = lang === 'zh' ? groupsZh : groupsEn;
+const heading = lang === 'zh' ? '使用的技术' : 'Tools I work with';
 ---
 
 {
   groups.length > 0 && (
     <div class="mt-12 border-t border-border pt-8 sm:mt-16 sm:pt-10" data-reveal>
       <p class="text-xs font-medium tracking-wide text-text-muted uppercase">
-        Tools I work with
+        {heading}
       </p>
 
       {/* The label and the chips are separate flex containers. Previously the
